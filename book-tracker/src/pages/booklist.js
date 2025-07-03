@@ -34,17 +34,17 @@ function BookTable() {
             data: 'endDate',
             render: data => moment(data).format("MM/DD/YYYY")
         },
-        // {
-        //     title: ' ',
-        //     render: (data, type, row) => {
-        //         if (type === 'display') {
-        //             return `<a href="/book/${row._id}" class="btn btn-primary">See More</a>`;
-        //         }
-        //         return '';
-        //     },
-        //     width: '100px',
+        {
+            title: ' ',
+            render: (data, type, row) => {
+                if (type === 'display') {
+                    return `<a href="/book/${row._id}" class="btn btn-primary">See More</a>`;
+                }
+                return '';
+            },
+            width: '100px',
             
-        // }
+        }
     ];
 
     return (
