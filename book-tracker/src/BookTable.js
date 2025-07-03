@@ -32,9 +32,9 @@ class BookTable extends React.Component {
         const columns = [
             { name: 'Title', data: 'title' },
             { name: 'Author', data: 'author' },
-            { name: 'Format', data: 'format', format: row => this.capitalizeFirstLetter(row.format) },
+            { name: 'Format', data: 'format', render: data => !data ? '' : data.charAt(0).toUpperCase() + data.slice(1)},
             { name: 'Genre', data: 'genre' },
-            { name: 'Date Finished', data: 'endDate', format: row => moment(row.timestamp).format('lll') },
+            { name: 'Date Finished', data: 'endDate', render: data => moment(data).format("MM/DD/YYYY") },
         ];
         return (
             <div>
