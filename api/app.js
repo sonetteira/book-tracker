@@ -11,6 +11,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var testAPIRouter = require('./routes/testAPI');
 var booksRouter = require('./routes/allBooks');
+var searchBookRouter = require('./routes/getBook');
 
 var app = express();
 
@@ -30,6 +31,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/testAPI', testAPIRouter);
 app.use('/books', booksRouter);
+app.use('/getBook', searchBookRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -58,7 +60,7 @@ app.get('/books', async (req, res) => {
   }
 });
 
-app.listen(3001, () => {
+server = app.listen(3001, () => {
   console.log(`Backend server is running on port ${app.get('port')}!`);
 });
 
