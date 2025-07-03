@@ -34,7 +34,9 @@ class BookTable extends React.Component {
             { title: 'Author', data: 'author' },
             { title: 'Format', data: 'format', render: data => !data ? '' : data.charAt(0).toUpperCase() + data.slice(1)},
             { title: 'Genre', data: 'genre' },
-            { title: 'Date Finished', data: 'endDate', render: data => moment(data).format("MM/DD/YYYY") },
+            { title: 'Date Finished', data: 'endDate', 
+                render: data => moment(data).format("MM/DD/YYYY") }, 
+                // Prefer Mon DD, YYYY format?
         ];
         return (
             <div>
