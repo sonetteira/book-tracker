@@ -1,7 +1,9 @@
 // import logo from './logo.svg';
 import './App.css';
 import React from 'react';
-import BookTable from './BookTable';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import BookList from './pages/booklist';
+import BookDetails from './pages/bookdetails';
 
 class App extends React.Component {
   render() {
@@ -10,7 +12,12 @@ class App extends React.Component {
         <header>
           <h1>Book Tracker</h1>
         </header>
-        <BookTable />
+        <Router>
+          <Routes>
+            <Route path="/" element={<BookList />} />
+            <Route path="/book/:id" element={<BookDetails />} />
+          </Routes>
+        </Router>
       </div>
     );
   }
