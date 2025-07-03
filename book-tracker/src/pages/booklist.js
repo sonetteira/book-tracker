@@ -12,13 +12,8 @@ function BookTable() {
         fetch(`${process.env.REACT_APP_API_URL}/books`)
             .then(res => res.json())
             .then(setApiResponse)
-            .then(() => { // if api response is empty, set to an empty array
-                if (!Array.isArray(apiResponse)) {
-                    setApiResponse([]);
-                }
-            })
             .catch(err => console.error(err));
-    }, [apiResponse]);
+    }, []);
 
     const capitalizeFirstLetter = (str) => {
         if (!str) return '';
@@ -38,14 +33,25 @@ function BookTable() {
             title: 'Date Finished', 
             data: 'endDate',
             render: data => moment(data).format("MM/DD/YYYY")
-        }
+        },
+        // {
+        //     title: ' ',
+        //     render: (data, type, row) => {
+        //         if (type === 'display') {
+        //             return `<a href="/book/${row._id}" class="btn btn-primary">See More</a>`;
+        //         }
+        //         return '';
+        //     },
+        //     width: '100px',
+            
+        // }
     ];
 
     return (
         <div>
             <h2>Book List</h2>
             <DataTable
-                data={apiResponse}
+                data={apiResponse && apiResponse.length > 0 ? apiResponse : []}
                 columns={columns}
                 options={{
                     paging: true,
