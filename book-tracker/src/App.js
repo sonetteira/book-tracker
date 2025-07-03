@@ -7,13 +7,10 @@ class App extends React.Component {
   render() {
     return (
       <div className="BookTracker">
-        <header className="App-header">
-          
-          {/* <p>
-            {this.state.apiResponse}
-          </p> */}
-          <BookTable />
+        <header>
+          <h1>Book Tracker</h1>
         </header>
+        <BookTable />
       </div>
     );
   }
