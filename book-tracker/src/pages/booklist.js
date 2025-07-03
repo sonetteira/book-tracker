@@ -12,8 +12,13 @@ function BookTable() {
         fetch(`${process.env.REACT_APP_API_URL}/books`)
             .then(res => res.json())
             .then(setApiResponse)
+            .then(() => { // if api response is empty, set to an empty array
+                if (!Array.isArray(apiResponse)) {
+                    setApiResponse([]);
+                }
+            })
             .catch(err => console.error(err));
-    }, []);
+    }, [apiResponse]);
 
     const capitalizeFirstLetter = (str) => {
         if (!str) return '';

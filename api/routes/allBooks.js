@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
     res.json(books); // Respond with the list of books as JSON
   } catch (err) {
     console.error('Error fetching books:', err);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: 'Error fetching books.' });
   }
 });
 

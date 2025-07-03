@@ -49,17 +49,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.get('/books', async (req, res) => {
-  try {
-    // Fetch all books from the database
-    const books = await Book.find();
-    res.json(books); // Respond with the list of books as JSON
-  } catch (err) {
-    console.error('Error fetching books:', err);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
-});
-
 server = app.listen(3001, () => {
   console.log(`Backend server is running on port ${app.get('port')}!`);
 });
