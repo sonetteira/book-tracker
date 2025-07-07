@@ -4,11 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/books').then((result) => {
-    console.log('connected to Mongodb');
-}).catch((err) => {
-    console.error(err);
-});
+mongoose.connect('mongodb://localhost:27017/books');
 
 // Insert books into the database
 const books = [
@@ -21,11 +17,9 @@ const books = [
 // Book.insertMany(books)
 //   .then(() => {
 //     console.log('Books inserted successfully');
-//     mongoose.connection.close(); // Close the connection after insertion
 //   })
 //   .catch((err) => {
 //     console.error('Error inserting books:', err);
-//     mongoose.connection.close(); // Close the connection on error
 //   });
 
   test('Database connection and book insertion', async () => {
