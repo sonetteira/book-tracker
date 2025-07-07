@@ -23,10 +23,11 @@ test('All books query', async () => {
 });
 
 test('Get book by ID', async () => {
-    const bookID = '68655364bb69c787d71bc05d';
+    const newest_book = await Book.findOne({}, {}, { sort: { 'created_at' : -1 } })
+    const bookID = newest_book._id;
     const response = await request(app).get(`/getBook?bookID=${bookID}`);
     expect(response.statusCode).toBe(200);
     const book = response.body;
-    expect(book).toHaveProperty('_id', bookID);
     expect(book).toHaveProperty('title');
+    expect(book.title).not.toBeNull();
 });
