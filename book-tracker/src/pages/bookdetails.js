@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function BookDetail() {
     const { id: bookID } = useParams();
@@ -27,7 +28,7 @@ function BookDetail() {
             <p><strong>Summary:</strong><br /> {book.summary}</p>
             <p><strong>Reaction:</strong><br /> {book.reaction}</p>
             <br />
-            <p><a href="/" class="btn btn-primary">Back</a></p>
+            <p><a href="/" class="btn btn-secondary">Back</a></p>
         </div>
     );
 }
