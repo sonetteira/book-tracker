@@ -26,6 +26,8 @@ function BookDetail() {
             <p><strong>Date Finished:</strong> {new Date(book.endDate).toLocaleDateString()}</p>
             <p><strong>Summary:</strong><br /> {book.summary}</p>
             <p><strong>Reaction:</strong><br /> {book.reaction}</p>
+            <br />
+            <p><a href="/" class="btn btn-primary">Back</a></p>
         </div>
     );
 }
