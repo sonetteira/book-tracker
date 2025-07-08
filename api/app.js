@@ -11,7 +11,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var testAPIRouter = require('./routes/testAPI');
 var booksRouter = require('./routes/allBooks');
-var searchBookRouter = require('./routes/getBook');
+var getBookRouter = require('./routes/getBook');
+var searchBookRouter = require('./routes/searchExternalBooks');
 
 var app = express();
 
@@ -31,7 +32,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/testAPI', testAPIRouter);
 app.use('/books', booksRouter);
-app.use('/getBook', searchBookRouter);
+app.use('/getBook', getBookRouter);
+app.use('/searchBooks', searchBookRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,15 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {useForm} from 'react-hook-form';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { AutoComplete } from 'primereact/autocomplete';
+        
+
 
 function AddBook() {
+    const [query, setQuery] = useState('');
+    const [bookAPIResponse, setBookApiResponse] = useState([]);
     const {register, watch} = useForm();
+    const replaceSpaces = (str) => str.replace(/\s/g, '+');
+
+    const getBookApiResponse = (event) => {
+        return fetch(`${process.env.REACT_APP_API_URL}/searchBooks?q=${replaceSpaces(event.query)}`)
+        .then(res => res.json())
+        // .then(data => { console.log(data); if (data.docs && data.numFound > 0) {
+        //     setBookApiResponse(...data.docs.map(item => ({
+        //         title: item.title,
+        //         author_name: item.author_name ? item.author_name : 'Unknown Author',
+        //         first_publish_year: item.first_publish_year || 'Unknown Year',
+        //         cover_i: item.cover_i ? `https://covers.openlibrary.org/b/id/${item.cover_i}-M.jpg` : null
+        //     })))
+        // } else {
+        //     setBookApiResponse([]);
+        // }})
+        .then(data => {
+            if (data.docs && data.numFound > 0) {
+                setBookApiResponse(data.docs.map(item => item.title + ' by ' + (item.author_name ? item.author_name.join(', ') : 'Unknown Author')));
+            } else {
+                setBookApiResponse([]);
+            }
+        })
+        .catch(err => console.error(err));
+    }
+    // const getBookApiResponse = (event) => {
+    //     setBookApiResponse([...Array(10).keys()].map(item => event.query + '-' + item));
+    // }
+    
     return (
     <>
         <h3>Add A Book</h3>
         <Form>
+            <p>Search:</p>
+            <AutoComplete
+                    value={query}
+                    suggestions={bookAPIResponse}
+                    completeMethod={getBookApiResponse}
+                    onChange={(e) => setQuery(e.value)}
+                />
             <Form.Group className="mb-3" controlId="formTitle">
                 <Form.Label>Title</Form.Label>
                 <Form.Control type="Text" placeholder="Title" />
