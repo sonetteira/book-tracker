@@ -1,63 +1,69 @@
 import React, { useState } from 'react';
-import {useForm} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { AutoComplete } from 'primereact/autocomplete';
-        
 
 
 function AddBook() {
-    const [query, setQuery] = useState('');
-    const [bookAPIResponse, setBookApiResponse] = useState([]);
+    const [bookObject, setBookObject] = useState({ title: '', author: '', yearPublished: '' });
+    const [selectedBook, setSelectedBook] = useState({ title: '', author: '', yearPublished: '', display: '' });
+    const [filteredBooks, setFilteredBooks] = useState([{ title: '', author: '', yearPublished: '', display: '' }]);
     const {register, watch} = useForm();
     const replaceSpaces = (str) => str.replace(/\s/g, '+');
 
     const getBookApiResponse = (event) => {
-        return fetch(`${process.env.REACT_APP_API_URL}/searchBooks?q=${replaceSpaces(event.query)}`)
-        .then(res => res.json())
-        // .then(data => { console.log(data); if (data.docs && data.numFound > 0) {
-        //     setBookApiResponse(...data.docs.map(item => ({
-        //         title: item.title,
-        //         author_name: item.author_name ? item.author_name : 'Unknown Author',
-        //         first_publish_year: item.first_publish_year || 'Unknown Year',
-        //         cover_i: item.cover_i ? `https://covers.openlibrary.org/b/id/${item.cover_i}-M.jpg` : null
-        //     })))
-        // } else {
-        //     setBookApiResponse([]);
-        // }})
-        .then(data => {
-            if (data.docs && data.numFound > 0) {
-                setBookApiResponse(data.docs.map(item => item.title + ' by ' + (item.author_name ? item.author_name.join(', ') : 'Unknown Author')));
+        if (!event.query.trim().length) {
+            setFilteredBooks([]);
+            return;
+        } else {
+            return fetch(`${process.env.REACT_APP_API_URL}/searchBooks?q=${replaceSpaces(event.query.trim())}`)
+            .then(res => res.json())
+            .then(data => { if (data.docs && data.numFound > 0) {
+                setFilteredBooks(data.docs.map(item => ({
+                    title: item.title,
+                    author: item.author_name,
+                    yearPublished: item.first_publish_year,
+                    display: `${item.title} by ${item.author_name ? item.author_name.join(', ') : 'Unknown Author'}`,
+                    // cover_i: item.cover_i ? `https://covers.openlibrary.org/b/id/${item.cover_i}-M.jpg` : null
+                })))
             } else {
-                setBookApiResponse([]);
-            }
-        })
-        .catch(err => console.error(err));
+                setFilteredBooks([]);
+            }})
+            .catch(err => console.error(err));
+        }
     }
-    // const getBookApiResponse = (event) => {
-    //     setBookApiResponse([...Array(10).keys()].map(item => event.query + '-' + item));
-    // }
     
     return (
     <>
         <h3>Add A Book</h3>
-        <Form>
-            <p>Search:</p>
-            <AutoComplete
-                    value={query}
-                    suggestions={bookAPIResponse}
+        <Form onSubmit={(e) => {
+            e.preventDefault();
+            console.log('Selected Book:', selectedBook);
+            setBookObject(selectedBook);
+        }}>
+            <Form.Group className="mb-3" controlId="formTitle">
+                <p>Search:</p>
+                <AutoComplete
+                    field = "display"
+                    value={selectedBook}
+                    suggestions={filteredBooks}
                     completeMethod={getBookApiResponse}
-                    onChange={(e) => setQuery(e.value)}
+                    onChange={(e) => setSelectedBook(e.value)}
                 />
+            </Form.Group>
+            <Button variant="primary" type="submit">Fill</Button>
+        </Form>
+        <Form>    
             <Form.Group className="mb-3" controlId="formTitle">
                 <Form.Label>Title</Form.Label>
-                <Form.Control type="Text" placeholder="Title" />
+                <Form.Control type="Text" placeholder="Title" defaultValue={ bookObject.title } />
             </Form.Group>
         
             <Form.Group className="mb-3" controlId="formAuthor">
                 <Form.Label>Author</Form.Label>
-                <Form.Control type="Text" placeholder="Author" />
+                <Form.Control type="Text" placeholder="Author" defaultValue={ bookObject.author } />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formGenre">
@@ -72,7 +78,7 @@ function AddBook() {
 
             <Form.Group className="mb-3" controlId="formYearPublished">
                 <Form.Label>Year Published</Form.Label>
-                <Form.Control type="Number" size="sm"/>
+                <Form.Control type="Number" size="sm" defaultValue={ bookObject.yearPublished } />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formWantToRead">
