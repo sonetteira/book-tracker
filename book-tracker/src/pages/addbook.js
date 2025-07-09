@@ -11,6 +11,7 @@ function AddBook() {
     const [bookObject, setBookObject] = useState(emptyBook);
     const [selectedBook, setSelectedBook] = useState(emptyBook);
     const [filteredBooks, setFilteredBooks] = useState([emptyBook]);
+    const [submitResponse, setSubmitResponse] = useState(null);
     const {register, watch} = useForm();
     const replaceSpaces = (str) => str.replace(/\s/g, '+');
 
@@ -42,7 +43,7 @@ function AddBook() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        return fetch(`${process.env.REACT_APP_API_URL}/addBook`, {
+        const response = fetch(`${process.env.REACT_APP_API_URL}/addBook`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -62,13 +63,33 @@ function AddBook() {
                 summary: e.target.formSummary.value.trim(),
                 reaction: e.target.formReaction.value.trim()
             })
-        });
+        }).then(handleResponse)
+        .then(() => {e.target.reset(); 
+            setBookObject(emptyBook); setSelectedBook(emptyBook); 
+            window.scrollTo(0, 0);
+        })
+        .catch(err => console.error('Error adding book:', err));
     }
 
-    
+    const handleResponse = async (response) => {
+        if (response.ok) {
+            const data = await response.json();
+            setSubmitResponse(data);
+        } else {
+            console.error('Error adding book:', response.statusText);
+        }
+    }
+
     return (
     <>
         <h3>Add A Book</h3>
+        {submitResponse && (
+            <div className="alert alert-success" role="alert">
+                {submitResponse.message}
+                <br />
+                Add another book or <a href="/">view all books</a>.
+            </div>
+        )}
         <Form onSubmit={(e) => {
             e.preventDefault();
             setBookObject(selectedBook);
