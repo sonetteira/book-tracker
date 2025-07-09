@@ -6,3 +6,8 @@ body {
 a {
   color: #00B7FF;
 }
+
+.section {
+  padding-bottom: 20px;
+  border-top: 1px solid #00B7FF;
+}

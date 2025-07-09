@@ -8,8 +8,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var testAPIRouter = require('./routes/testAPI');
 var booksRouter = require('./routes/allBooks');
 var getBookRouter = require('./routes/getBook');
 var searchBookRouter = require('./routes/searchExternalBooks');
@@ -29,8 +27,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/testAPI', testAPIRouter);
 app.use('/books', booksRouter);
 app.use('/getBook', getBookRouter);
 app.use('/searchBooks', searchBookRouter);

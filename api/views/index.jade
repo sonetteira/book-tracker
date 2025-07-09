@@ -2,4 +2,11 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  div
+    h2 API Endpoints
+    each endpoint in endpoints
+      div(class='section')
+        p= endpoint.name
+        a(href=endpoint.path)= endpoint.path
+        if endpoint.note
+          p= endpoint.note
