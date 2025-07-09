@@ -60,6 +60,7 @@ function BookTable() {
                     order: [[4, 'desc']],
                 }}
             />
+            <p><a href="/addBook" className="btn btn-primary">Add New Book</a></p>
         </div>
     );
 }

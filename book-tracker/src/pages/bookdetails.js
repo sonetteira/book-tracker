@@ -28,7 +28,7 @@ function BookDetail() {
             <p><strong>Summary:</strong><br /> {book.summary}</p>
             <p><strong>Reaction:</strong><br /> {book.reaction}</p>
             <br />
-            <p><a href="/" class="btn btn-secondary">Back</a></p>
+            <p><a href="/" className="btn btn-secondary">Back</a></p>
         </div>
     );
 }

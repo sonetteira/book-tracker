@@ -41,6 +41,10 @@
   text-align: left;
 }
 
+.dt-container {
+  margin: 20px;
+}
+
 .p-autocomplete-panel {
   opacity: 1.0;
   background-color: white;
