@@ -7,9 +7,10 @@ import { AutoComplete } from 'primereact/autocomplete';
 
 
 function AddBook() {
-    const [bookObject, setBookObject] = useState({ title: '', author: '', yearPublished: '' });
-    const [selectedBook, setSelectedBook] = useState({ title: '', author: '', yearPublished: '', display: '' });
-    const [filteredBooks, setFilteredBooks] = useState([{ title: '', author: '', yearPublished: '', display: '' }]);
+    const emptyBook = { fullTitle: '', title: '', subtitle: '', author: '', yearPublished: '', display: '' };
+    const [bookObject, setBookObject] = useState(emptyBook);
+    const [selectedBook, setSelectedBook] = useState(emptyBook);
+    const [filteredBooks, setFilteredBooks] = useState([emptyBook]);
     const {register, watch} = useForm();
     const replaceSpaces = (str) => str.replace(/\s/g, '+');
 
@@ -22,7 +23,11 @@ function AddBook() {
             .then(res => res.json())
             .then(data => { if (data.docs && data.numFound > 0) {
                 setFilteredBooks(data.docs.map(item => ({
-                    title: item.title,
+                    fullTitle: item.title,
+                    title: item.title.split(':')[0] || item.title,
+                    subtitle: item.title.split(':')[1] || '',
+                    // title: item.title,
+                    // subtitle: item.subtitle,
                     author: item.author_name,
                     yearPublished: item.first_publish_year,
                     display: `${item.title} by ${item.author_name ? item.author_name.join(', ') : 'Unknown Author'}`,
@@ -58,9 +63,14 @@ function AddBook() {
         <Form>    
             <Form.Group className="mb-3" controlId="formTitle">
                 <Form.Label>Title</Form.Label>
-                <Form.Control type="Text" placeholder="Title" required defaultValue={ bookObject.title } />
+                <Form.Control type="Text" placeholder="Title" required defaultValue={ bookObject.title.trim() } />
             </Form.Group>
-        
+
+            <Form.Group className="mb-3" controlId="formSubtitle">
+                <Form.Label>Subtitle</Form.Label>
+                <Form.Control type="Text" placeholder="Subtitle" defaultValue={ bookObject.subtitle.trim() } />
+            </Form.Group>
+            
             <Form.Group className="mb-3" controlId="formAuthor">
                 <Form.Label>Author</Form.Label>
                 <Form.Control type="Text" placeholder="Author" defaultValue={ bookObject.author } />
