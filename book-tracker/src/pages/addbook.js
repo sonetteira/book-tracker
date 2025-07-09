@@ -39,13 +39,38 @@ function AddBook() {
             .catch(err => console.error(err));
         }
     }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        return fetch(`${process.env.REACT_APP_API_URL}/addBook`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: e.target.formTitle.value.trim(),
+                subtitle: e.target.formSubtitle.value.trim(),
+                author: e.target.formAuthor.value.trim(),
+                genre: e.target.formGenre.value.trim(),
+                pageCount: e.target.formPgCount.value.trim(),
+                yearPublished: e.target.formYearPublished.value.trim(),
+                recommender: e.target.formRecommender.value.trim(),
+                wantToRead: e.target.formWantToRead.checked,
+                format: e.target.formFormat.value,
+                startDate: e.target.formStartDate.value.trim(),
+                endDate: e.target.formEndDate.value.trim(),
+                summary: e.target.formSummary.value.trim(),
+                reaction: e.target.formReaction.value.trim()
+            })
+        });
+    }
+
     
     return (
     <>
         <h3>Add A Book</h3>
         <Form onSubmit={(e) => {
             e.preventDefault();
-            console.log('Selected Book:', selectedBook);
             setBookObject(selectedBook);
         }}>
             <Form.Group className="mb-3" controlId="formTitle">
@@ -60,7 +85,7 @@ function AddBook() {
             </Form.Group>
             <Button variant="primary" type="submit">Fill</Button>
         </Form>
-        <Form>    
+        <Form onSubmit={handleSubmit} className="mt-3">    
             <Form.Group className="mb-3" controlId="formTitle">
                 <Form.Label>Title</Form.Label>
                 <Form.Control type="Text" placeholder="Title" required defaultValue={ bookObject.title.trim() } />
@@ -100,7 +125,7 @@ function AddBook() {
                 <Form.Check type="checkbox" name="notread" {...register("notread")} label="Want To Read" />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlID="formFormat">
+            <Form.Group className="mb-3" controlId="formFormat">
                 <Form.Label>Format</Form.Label>
                 <Form.Select aria-label="select format" {...register("format")} disabled={watch("notread")}>
                     <option value="">---</option>

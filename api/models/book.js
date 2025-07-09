@@ -10,6 +10,8 @@ const bookSchema = new mongoose.Schema({
   genre: { type: String },
   pageCount: { type: Number },
   yearPublished: { type: Number },
+  recommender: { type: String },
+  wantToRead: { type: Boolean, default: false },
   startDate: { type: Date },
   endDate: { type: Date },
   summary: { type: String },
