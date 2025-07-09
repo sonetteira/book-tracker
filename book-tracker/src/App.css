@@ -40,3 +40,13 @@
 .dt-column-header {
   text-align: left;
 }
+
+.p-autocomplete-panel {
+  opacity: 1.0;
+  background-color: white;
+  width: auto;
+}
+
+.p-autocomplete-item:hover {
+  background-color: #acacac;
+}
