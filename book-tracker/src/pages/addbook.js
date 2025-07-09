@@ -58,7 +58,7 @@ function AddBook() {
         <Form>    
             <Form.Group className="mb-3" controlId="formTitle">
                 <Form.Label>Title</Form.Label>
-                <Form.Control type="Text" placeholder="Title" defaultValue={ bookObject.title } />
+                <Form.Control type="Text" placeholder="Title" required defaultValue={ bookObject.title } />
             </Form.Group>
         
             <Form.Group className="mb-3" controlId="formAuthor">
@@ -79,6 +79,11 @@ function AddBook() {
             <Form.Group className="mb-3" controlId="formYearPublished">
                 <Form.Label>Year Published</Form.Label>
                 <Form.Control type="Number" size="sm" defaultValue={ bookObject.yearPublished } />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formRecommender">
+                <Form.Label>Recommender</Form.Label>
+                <Form.Control type="Text" placeholder="Recommender" />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formWantToRead">
