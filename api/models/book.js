@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const formatEnum = ['ebook', 'audiobook', 'paper'];
 
 const bookSchema = new mongoose.Schema({
-  title: { type: String, required: true },
+  title: { type: String, required: true, index: true },
   subtitle: { type: String },
   author: { type: String },
   format: { type: String, enum: formatEnum },
