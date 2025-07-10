@@ -11,8 +11,8 @@ var Book = require('../models/book');
 
 router.get('/', async (req, res) => {
   try {
-    // Fetch all books from the database
-    const books = await Book.find();
+    // Fetch top 50 read books from the database
+    const books = await Book.find({'wantToRead': false}).limit(50);
     res.json(books); // Respond with the list of books as JSON
   } catch (err) {
     console.error('Error fetching books:', err);
