@@ -41,7 +41,7 @@ function AddBook() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const response = fetch(`${process.env.REACT_APP_API_URL}/addBook`, {
+        fetch(`${process.env.REACT_APP_API_URL}/addBook`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -66,12 +66,17 @@ function AddBook() {
             setBookObject(emptyBook); setSelectedBook(emptyBook); 
             window.scrollTo(0, 0);
         })
-        .catch(err => console.error('Error adding book:', err));
+        .catch(err => {
+            console.error('Error adding book:', err);
+            setSubmitResponse({ ok: false, message: 'Error adding book. Please try again later.' });
+            window.scrollTo(0, 0);
+        });
     }
 
     const handleResponse = async (response) => {
         if (response.ok) {
             const data = await response.json();
+            data.ok = response.ok;
             setSubmitResponse(data);
         } else {
             console.error('Error adding book:', response.statusText);
@@ -81,11 +86,16 @@ function AddBook() {
     return (
     <>
         <h3>Add A Book</h3>
-        {submitResponse && (
+        {submitResponse && submitResponse.ok && (
             <div className="alert alert-success" role="alert">
                 {submitResponse.message}
                 <br />
                 Add another book or <a href="/">view all books</a>.
+            </div>
+        )}
+        {submitResponse && !submitResponse.ok && (
+            <div className="alert alert-danger" role="alert">
+                {submitResponse.message}
             </div>
         )}
         <Form onSubmit={(e) => {
