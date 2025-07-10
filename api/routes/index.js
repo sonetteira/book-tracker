@@ -10,7 +10,9 @@ router.get('/', function(req, res, next) {
         note: 'Use query parameter "bookID" to enter a MongoDB ObjectID' },
       { name: 'Search External Books', path: '/searchBooks',
         note: 'Searches Open Library API for books. \n' +
-        'Use query parameter "q" to enter a search query.' }
+        'Use query parameter "q" to enter a search query.' },
+      { name: 'Add Book', path: '/addBook',
+        note: 'Use POST request to add a book to the MongoDB.' }
     ]
    });
 });
