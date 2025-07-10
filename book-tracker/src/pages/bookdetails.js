@@ -18,15 +18,20 @@ function BookDetail() {
     return (
         <div>
             <h2>{book.title}</h2>
+            <p><strong>Subtitle:</strong> {book.subtitle}</p>
             <p><strong>Author:</strong> {book.author}</p>
             <p><strong>Format:</strong> {book.format}</p>
             <p><strong>Genre:</strong> {book.genre}</p>
             <p><strong>Page Count:</strong> {book.pageCount}</p>
             <p><strong>Year Published:</strong> {book.yearPublished}</p>
+            <p><strong>Recommender:</strong> {book.recommender}</p>
+            { !book.wantToRead && // only display if wantToRead is false
+            <>
             <p><strong>Start Date:</strong> {new Date(book.startDate).toLocaleDateString()}</p>
             <p><strong>Date Finished:</strong> {new Date(book.endDate).toLocaleDateString()}</p>
             <p><strong>Summary:</strong><br /> {book.summary}</p>
             <p><strong>Reaction:</strong><br /> {book.reaction}</p>
+            </> }
             <br />
             <p><a href="/" className="btn btn-secondary">Back</a></p>
         </div>
