@@ -5,14 +5,24 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Book Tracker', 
     endpoints: [
-      { name: 'Get All Books', path: '/books' },
-      { name: 'Get Book by ID', path: '/getBook', 
-        note: 'Use query parameter "bookID" to enter a MongoDB ObjectID' },
-      { name: 'Search External Books', path: '/searchBooks',
-        note: 'Searches Open Library API for books. \n' +
-        'Use query parameter "q" to enter a search query.' },
-      { name: 'Add Book', path: '/addBook',
-        note: 'Use POST request to add a book to the MongoDB.' }
+      { name: 'Get Finished Books', path: '/books', note:
+        'Defaults to returning most recent 50 read books from the database. \n' +
+        'Use query parameter toread=T to return books with want to read flag set.'
+      },
+      { name: 'Get Book by ID', path: '/getBook', note: 
+        'Use query parameter "bookID" to enter a MongoDB ObjectID' 
+      },
+      { name: 'Search My Books', path: '/searchMyBooks', note:
+        'Searches MongoDB for books for a search query based on title, subtitle, author. \n' +
+        'Use query parameter "searchTerm" to enter a search query.'
+      },
+      { name: 'Search External Books', path: '/searchBooks', note: 
+        'Searches Open Library API for books. \n' +
+        'Use query parameter "q" to enter a search query.'
+      },
+      { name: 'Add Book', path: '/addBook', note: 
+        'Use POST request to add a book to the MongoDB.'
+      }
     ]
    });
 });
