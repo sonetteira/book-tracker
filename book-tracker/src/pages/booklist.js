@@ -50,7 +50,10 @@ function BookTable() {
         { 
             title: 'Date Finished', 
             data: 'endDate',
-            render: data => moment(data).format("MM/DD/YYYY")
+            render: data => {
+                if (!data) return '';
+                return moment(data).format("MM/DD/YYYY");
+            }
         },
         {
             title: ' ',
