@@ -9,7 +9,7 @@ import AddBook from './pages/addbook';
 class App extends React.Component {
   render() {
     return (
-      <div className="BookTracker">
+      <div className="container">
         <header>
           <h1>Book Tracker</h1>
         </header>
