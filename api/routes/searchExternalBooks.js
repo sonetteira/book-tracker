@@ -3,7 +3,7 @@ var router = express.Router();
 const searchEndpoint = 'search.json?q=';
 
 const search = (query) => {
-    return fetch(`${process.env.BOOK_SEARCH_API_URL}/${searchEndpoint}${query}`)
+    return fetch(`${process.env.BOOK_SEARCH_API_URL}/${searchEndpoint}${encodeURIComponent(query)}`)
     .then(res => res.json())
     .catch(err => console.error(err));
 }

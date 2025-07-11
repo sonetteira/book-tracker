@@ -7,7 +7,7 @@ function BookDetail() {
     const [book, setBook] = useState(null);
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}/getBook?bookID=${bookID}`)
+        fetch(`${process.env.REACT_APP_API_URL}/getBook?bookID=${encodeURIComponent(bookID)}`)
             .then(res => res.json())
             .then(setBook)
             .catch(err => console.error(err));

@@ -18,7 +18,7 @@ function AddBook() {
             setFilteredBooks([]);
             return;
         } else {
-            return fetch(`${process.env.REACT_APP_API_URL}/searchBooks?q=${replaceSpaces(event.query.trim())}`)
+            return fetch(`${process.env.REACT_APP_API_URL}/searchBooks?q=${encodeURIComponent(replaceSpaces(event.query.trim()))}`)
             .then(res => res.json())
             .then(data => { if (data.docs && data.numFound > 0) {
                 setFilteredBooks(data.docs.map(item => ({
