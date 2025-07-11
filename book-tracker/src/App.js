@@ -11,7 +11,7 @@ class App extends React.Component {
     return (
       <div className="container">
         <header>
-          <h1>Book Tracker</h1>
+          <h1><a className="link-unstyled" href="/">Book Tracker</a></h1>
         </header>
         <Router>
           <Routes>
