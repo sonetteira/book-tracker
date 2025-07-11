@@ -57,7 +57,7 @@ function BookTable() {
                     paging: true,
                     searching: true,
                     ordering: true,
-                    order: [[4, 'desc']],
+                    order: [[4]],
                 }}
             />
             <p><a href="/addBook" className="btn btn-primary">Add New Book</a></p>
