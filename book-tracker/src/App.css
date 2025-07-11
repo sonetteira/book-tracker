@@ -55,6 +55,7 @@
   background-color: #acacac;
 }
 
+/* credit to Scott Galloway (https://codepen.io/scottloway/pen/grgJgB) */
 .link-unstyled {
   &,
   &:visited,
