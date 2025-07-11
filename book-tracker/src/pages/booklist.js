@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import DataTable from 'datatables.net-react';
-import DT from 'datatables.net-dt';
+import DT from 'datatables.net-bs5';
 import moment from 'moment';
  
 DataTable.use(DT);
 
 function BookTable() {
     const [apiResponse, setApiResponse] = useState([]);
+    const table = useRef(null);
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}/books`)
@@ -19,6 +20,23 @@ function BookTable() {
         if (!str) return '';
         return str.charAt(0).toUpperCase() + str.slice(1);
     };
+
+    const customSearch = () => {
+        let api = table.current.dt();
+        let searchTerm = api.search();
+        if (!searchTerm) {
+            fetch(`${process.env.REACT_APP_API_URL}/books`)
+                .then(res => res.json())
+                .then(data => {
+                    api.clear().rows.add(data).draw();
+                });
+        }
+        fetch(`${process.env.REACT_APP_API_URL}/searchMyBooks?searchTerm=${encodeURIComponent(searchTerm)}`)
+            .then(res => res.json())
+            .then(data => {
+                api.clear().rows.add(data).draw();
+            });
+    }
 
     const columns = [
         { title: 'Title', data: 'title' },
@@ -49,10 +67,12 @@ function BookTable() {
 
     return (
         <div>
-            <h2>Book List</h2>
+            <h2>Finished Books</h2>
+            <button className="btn btn-secondary mb-3" onClick={customSearch}>Search All</button>
             <DataTable
                 data={apiResponse && apiResponse.length > 0 ? apiResponse : []}
                 columns={columns}
+                ref={table}
                 options={{
                     paging: true,
                     searching: true,
