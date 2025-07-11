@@ -15,7 +15,7 @@ class App extends React.Component {
         </header>
         <Router>
           <Routes>
-            <Route path="/" element={<BookList />} />
+            <Route path="/:toRead?" element={<BookList />} />
             <Route path="/book/:id" element={<BookDetails />} />
             <Route path="/addBook" element={<AddBook />} />
           </Routes>

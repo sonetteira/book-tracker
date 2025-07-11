@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-bs5';
 import moment from 'moment';
@@ -8,13 +9,16 @@ DataTable.use(DT);
 function BookTable() {
     const [apiResponse, setApiResponse] = useState([]);
     const table = useRef(null);
+    const { toRead: toRead } = useParams();
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}/books`)
+        // set api call based on toRead parameter
+        const apiCall = toRead && toRead.toLocaleUpperCase() === 'TOREAD' ? 'books?toread=T' : 'books';
+        fetch(`${process.env.REACT_APP_API_URL}/${apiCall}`)
             .then(res => res.json())
             .then(setApiResponse)
             .catch(err => console.error(err));
-    }, []);
+    }, [toRead]);
 
     const capitalizeFirstLetter = (str) => {
         if (!str) return '';

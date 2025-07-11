@@ -10,11 +10,15 @@ var router = express.Router();
 var Book = require('../models/book');
 
 router.get('/', async (req, res) => {
+  // get optional query parameters
+  const wantToRead = req.query.toread === 'T' ? true : false;
   try {
     // Fetch top 50 read books from the database
-    const books = await Book.find(
-      { $or: [ { 'wantToRead': false }, { 'wantToRead': null } ] }
-    ).sort({ 'endDate': -1 }).limit(50);
+    // If wantToRead is true, fetch books that are marked as wantToRead
+    wantToReadQuery = wantToRead ? { 'wantToRead': true } : 
+      { $or: [ { 'wantToRead': false }, { 'wantToRead': null } ] };
+    const books = await Book.find( { ...wantToReadQuery } 
+      ).sort({ 'endDate': -1 }).limit(50);
     res.json(books); // Respond with the list of books as JSON
   } catch (err) {
     console.error('Error fetching books:', err);
