@@ -18,12 +18,12 @@ function BookForm({ bookObject, handleSubmit, submitText }) {
         <Form onSubmit={handleSubmit} className="mt-3">    
             <Form.Group className="mb-3" controlId="formTitle">
                 <Form.Label>Title</Form.Label>
-                <Form.Control type="Text" placeholder="Title" required defaultValue={ bookObject.title.trim() } />
+                <Form.Control type="Text" placeholder="Title" required defaultValue={ bookObject.title } />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formSubtitle">
                 <Form.Label>Subtitle</Form.Label>
-                <Form.Control type="Text" placeholder="Subtitle" defaultValue={ bookObject.subtitle.trim() } />
+                <Form.Control type="Text" placeholder="Subtitle" defaultValue={ bookObject.subtitle } />
             </Form.Group>
             
             <Form.Group className="mb-3" controlId="formAuthor">
@@ -38,12 +38,12 @@ function BookForm({ bookObject, handleSubmit, submitText }) {
 
             <Form.Group className="mb-3" controlId="formPgCount">
                 <Form.Label>Page Count</Form.Label>
-                <Form.Control type="Number" size="sm" defaultValue={ bookObject.pageCount || '' } />
+                <Form.Control type="Number" size="sm" defaultValue={ bookObject.pageCount } />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formYearPublished">
                 <Form.Label>Year Published</Form.Label>
-                <Form.Control type="Number" size="sm" defaultValue={ bookObject.yearPublished || '' } />
+                <Form.Control type="Number" size="sm" defaultValue={ bookObject.yearPublished } />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formRecommender">

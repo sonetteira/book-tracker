@@ -28,12 +28,13 @@ function BookDetail() {
             { book.wantToRead && <p>Want To Read</p>}
             { !book.wantToRead && // only display if wantToRead is false
             <>
-            <p><strong>Start Date:</strong> {new Date(book.startDate).toLocaleDateString()}</p>
-            <p><strong>Date Finished:</strong> {new Date(book.endDate).toLocaleDateString()}</p>
+            <p><strong>Start Date:</strong> {new Date(book.startDate).toLocaleDateString('en-US', {timeZone: 'UTC'})}</p>
+            <p><strong>Date Finished:</strong> {new Date(book.endDate).toLocaleDateString('en-US', {timeZone: 'UTC'})}</p>
             {book.summary && <p><strong>Summary:</strong><br /> {book.summary}</p>}
             {book.reaction && <p><strong>Reaction:</strong><br /> {book.reaction}</p>}
             </>}
             <br />
+            <p><a href={`/editBook/${bookID}`} className='btn btn-primary'>Edit Book</a></p>
             <p><a href="/" className="btn btn-secondary">Back</a></p>
         </div>
     );
