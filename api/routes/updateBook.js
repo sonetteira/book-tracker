@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
             return res.status(404).send('Book not found');
         }
 
-        res.status(200).json({ message: 'Book updated successfully!', book });
+        res.status(200).json({ message: 'Book updated successfully!', book: book });
     } catch (error) {
         console.error(error);
         res.status(500).send('Server error');
