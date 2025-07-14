@@ -22,6 +22,10 @@ router.get('/', function(req, res, next) {
       },
       { name: 'Add Book', path: '/addBook', note: 
         'Use POST request to add a book to the MongoDB.'
+      },
+      {
+        name: 'Update Book', path: '/updateBook', note:
+        'Use POST request to update a book in the MongoDB using its ID.'
       }
     ]
    });

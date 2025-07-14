@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import BookList from './pages/booklist';
 import BookDetails from './pages/bookdetails';
 import AddBook from './pages/addbook';
+import EditBook from './pages/editBook';
 
 class App extends React.Component {
   render() {
@@ -18,6 +19,7 @@ class App extends React.Component {
             <Route path="/:toRead?" element={<BookList />} />
             <Route path="/book/:id" element={<BookDetails />} />
             <Route path="/addBook" element={<AddBook />} />
+            <Route path="/editBook/:id" element={<EditBook />} />
           </Routes>
         </Router>
       </div>

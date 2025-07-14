@@ -115,7 +115,7 @@ function AddBook() {
             <Button variant="primary" type="submit">Fill</Button>
         </Form>
         
-        <BookForm bookObject={bookObject} handleSubmit={handleSubmit} />
+        <BookForm bookObject={bookObject} handleSubmit={handleSubmit} submitText={'Add Book'}/>
     </>
     );
 }
