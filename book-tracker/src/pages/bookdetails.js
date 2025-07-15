@@ -35,7 +35,7 @@ function BookDetail() {
             </>}
             <br />
             <p><a href={`/editBook/${bookID}`} className='btn btn-primary'>Edit Book</a></p>
-            <p><a href="/" className="btn btn-secondary">Back</a></p>
+            <p><button onClick={() => window.history.back()} className="btn btn-secondary">Back</button></p>
         </div>
     );
 }
