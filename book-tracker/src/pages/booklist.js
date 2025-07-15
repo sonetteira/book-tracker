@@ -74,7 +74,7 @@ function BookTable() {
 
     return (
         <div>
-            <h2>Finished Books</h2>
+            <h2>{toRead ? 'Books To Read' : 'Finished Books'}</h2>
             <button className="btn btn-secondary mb-3 float-end" onClick={customSearch}>Search All</button>
             <DataTable
                 data={apiResponse && apiResponse.length > 0 ? apiResponse : []}
