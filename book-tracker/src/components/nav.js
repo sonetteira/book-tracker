@@ -6,7 +6,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 function Navigation() {
     return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar expand="lg" data-bs-theme="dark">
         <Container>
             <Navbar.Brand href="/">Book Tracker</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -15,10 +15,10 @@ function Navigation() {
                     <Nav.Link href="/">Finished Books</Nav.Link>
                     <Nav.Link href="/toread">Reading List</Nav.Link>
                     <Nav.Link href="/addBook">Add Book</Nav.Link>
-                    {/* <NavDropdown title="Reports" id="basic-nav-dropdown">
+                    <NavDropdown title="Reports" id="basic-nav-dropdown" disabled>
                         <NavDropdown.Item href="/yearlyReport">Yearly Report</NavDropdown.Item>
                         <NavDropdown.Item href="/">Yearly Books by Author</NavDropdown.Item>
-                    </NavDropdown> */}
+                    </NavDropdown>
                 </Nav>
             </Navbar.Collapse>
         </Container>

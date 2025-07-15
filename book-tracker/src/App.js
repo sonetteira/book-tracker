@@ -2,20 +2,22 @@
 import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Nav from './components/nav';
+import Navigation from './components/nav';
 import BookList from './pages/booklist';
 import BookDetails from './pages/bookdetails';
 import AddBook from './pages/addbook';
 import EditBook from './pages/editBook';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends React.Component {
   render() {
     return (
+      <>
+      <header className='bg-secondary bg-gradient p-3 mb-3'>
+        {/* <h1><a className="link-unstyled" href="/">Book Tracker</a></h1> */}
+        <Navigation />
+      </header>
       <div className="container">
-        <header>
-          {/* <h1><a className="link-unstyled" href="/">Book Tracker</a></h1> */}
-          <Nav />
-        </header>
         <Router>
           <Routes>
             <Route path="/:toRead?" element={<BookList />} />
@@ -25,6 +27,7 @@ class App extends React.Component {
           </Routes>
         </Router>
       </div>
+      </>
     );
   }
 }
