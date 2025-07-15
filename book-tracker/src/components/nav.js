@@ -13,7 +13,7 @@ function Navigation() {
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
                     <Nav.Link href="/">Finished Books</Nav.Link>
-                    <Nav.Link href="/toread">Reading List</Nav.Link>
+                    <Nav.Link href="/toread">To Read</Nav.Link>
                     <Nav.Link href="/addBook">Add Book</Nav.Link>
                     <NavDropdown title="Reports" id="basic-nav-dropdown" disabled>
                         <NavDropdown.Item href="/yearlyReport">Yearly Report</NavDropdown.Item>
