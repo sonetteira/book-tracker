@@ -2,6 +2,7 @@
 import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Nav from './components/nav';
 import BookList from './pages/booklist';
 import BookDetails from './pages/bookdetails';
 import AddBook from './pages/addbook';
@@ -12,7 +13,8 @@ class App extends React.Component {
     return (
       <div className="container">
         <header>
-          <h1><a className="link-unstyled" href="/">Book Tracker</a></h1>
+          {/* <h1><a className="link-unstyled" href="/">Book Tracker</a></h1> */}
+          <Nav />
         </header>
         <Router>
           <Routes>
