@@ -10,15 +10,16 @@ function BookTable() {
     const [apiResponse, setApiResponse] = useState([]);
     const table = useRef(null);
     const { toRead } = useParams();
+    var toReadSet = toRead && toRead.toLocaleUpperCase() === 'TOREAD';
 
     useEffect(() => {
         // set api call based on toRead parameter
-        const apiCall = toRead && toRead.toLocaleUpperCase() === 'TOREAD' ? 'books?toread=T' : 'books';
+        const apiCall = toReadSet ? 'books?toread=T' : 'books';
         fetch(`${process.env.REACT_APP_API_URL}/${apiCall}`)
             .then(res => res.json())
             .then(setApiResponse)
             .catch(err => console.error(err));
-    }, [toRead]);
+    }, [toReadSet]);
 
     const capitalizeFirstLetter = (str) => {
         if (!str) return '';
@@ -42,15 +43,7 @@ function BookTable() {
             });
     }
 
-    const columns = [
-        { title: 'Title', data: 'title' },
-        { title: 'Author', data: 'author' },
-        { 
-            title: 'Format', 
-            data: 'format', 
-            render: data => !data ? '' : capitalizeFirstLetter(data)
-        },
-        { title: 'Genre', data: 'genre' },
+    const finishedViewColumns = [ //columns included only if viewing finished books
         { 
             title: 'Date Finished', 
             data: 'endDate',
@@ -59,6 +52,22 @@ function BookTable() {
                 return moment(data).format("MM/DD/YYYY");
             }
         },
+    ];
+
+    const allViewColumns = [ 
+        //columns included in all views
+        { title: 'Title', data: 'title' },
+        { title: 'Author', data: 'author' },
+        { 
+            title: 'Format', 
+            data: 'format', 
+            render: data => !data ? '' : capitalizeFirstLetter(data)
+        },
+        { title: 'Genre', data: 'genre' },
+    ];
+
+    const seeMoreColumns = [
+        // see more column
         {
             title: ' ',
             render: (data, type, row) => {
@@ -72,9 +81,12 @@ function BookTable() {
         }
     ];
 
+    // set columns based on view
+    const columns = toReadSet ? [...allViewColumns, ...seeMoreColumns] : [...allViewColumns, ...finishedViewColumns, ...seeMoreColumns]
+
     return (
         <div>
-            <h2>{toRead ? 'Books To Read' : 'Finished Books'}</h2>
+            <h2>{toReadSet ? 'Books To Read' : 'Finished Books'}</h2>
             <button className="btn btn-secondary mb-3 float-end" onClick={customSearch}>Search All</button>
             <DataTable
                 data={apiResponse && apiResponse.length > 0 ? apiResponse : []}
