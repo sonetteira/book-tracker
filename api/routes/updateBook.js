@@ -1,11 +1,4 @@
-const express = require('express');
-const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGO_URL)
-.then((result) => {
-    console.log('connected to Mongodb');
-}).catch((err) => {
-    console.error(err);
-});
+var express = require('express');
 var router = express.Router();
 var Book = require('../models/book');
 

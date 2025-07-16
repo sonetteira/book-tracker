@@ -7,6 +7,15 @@ var cors = require('cors');
 const dotenv = require('dotenv');
 dotenv.config();
 
+const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGO_URL)
+.then((result) => {
+    console.log('connected to Mongodb');
+}).catch((err) => {
+    console.error(err);
+});
+var Book = require('./models/book'); // Path to the Book model
+
 var indexRouter = require('./routes/index');
 var booksRouter = require('./routes/allBooks');
 var getBookRouter = require('./routes/getBook');
