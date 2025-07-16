@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Book = require('../models/book'); // Path to the Book model
+const Book = require('../models/book');
 const dotenv = require('dotenv');
 dotenv.config();
 
