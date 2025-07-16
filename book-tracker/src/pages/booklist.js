@@ -9,7 +9,7 @@ DataTable.use(DT);
 function BookTable() {
     const [apiResponse, setApiResponse] = useState([]);
     const table = useRef(null);
-    const { toRead: toRead } = useParams();
+    const { toRead } = useParams();
 
     useEffect(() => {
         // set api call based on toRead parameter
