@@ -20,6 +20,25 @@ function BookTable() {
             .catch(err => console.error(err));
     }, [toReadSet]);
 
+    useEffect(() => {
+        // handle enter key event on search bar
+        const handleKeyDown = event => {
+            if(event.key === 'Enter'){
+                customSearch();
+            }
+        };
+        // yes this is ugly. don't worry about it.
+        let searchInput = document.getElementById('dt-search-1');
+        console.log(`search input: ${searchInput}`);
+        if(searchInput) {
+            searchInput.addEventListener('keydown', handleKeyDown);
+
+            return () => {
+                searchInput.removeEventListener('onKeyDown', handleKeyDown);
+            };
+        }        
+      }, [table]);
+
     const capitalizeFirstLetter = (str) => {
         if (!str) return '';
         return str.charAt(0).toUpperCase() + str.slice(1);
