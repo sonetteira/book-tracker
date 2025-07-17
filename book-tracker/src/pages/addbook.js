@@ -84,6 +84,7 @@ function AddBook() {
 
     return (
     <>
+        <title>Add Book</title>
         <h3>Add A Book</h3>
         {submitResponse && submitResponse.ok && (
             <div className="alert alert-success" role="alert">

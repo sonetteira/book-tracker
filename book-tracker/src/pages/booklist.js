@@ -85,6 +85,7 @@ function BookTable() {
 
     return (
         <div>
+            <title>{toReadSet ? 'Books To Read' : 'Finished Books'}</title>
             <h2>{toReadSet ? 'Books To Read' : 'Finished Books'}</h2>
             <button className="btn btn-secondary mb-3 float-end" onClick={customSearch}>Search All</button>
             <DataTable

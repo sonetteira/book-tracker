@@ -66,6 +66,7 @@ function EditBook() {
 
     return (
     <>
+        <title>Edit Book</title>
         <h3>Edit Book</h3>
         {submitResponse && submitResponse.ok && (
             <div className="alert alert-success" role="alert">

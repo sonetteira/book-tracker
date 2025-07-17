@@ -17,6 +17,7 @@ function BookDetail() {
 
     return (
         <div>
+            <title>Book Details</title>
             <h2>{book.title}</h2>
             {book.subtitle && <p><strong>Subtitle:</strong> {book.subtitle}</p>}
             <p><strong>Author:</strong> {book.author}</p>
