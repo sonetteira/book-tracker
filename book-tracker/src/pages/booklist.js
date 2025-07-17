@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-bs5';
-import moment from 'moment';
  
 DataTable.use(DT);
 
@@ -49,7 +48,7 @@ function BookTable() {
             data: 'endDate',
             render: data => {
                 if (!data) return '';
-                return moment(data).format("MM/DD/YYYY");
+                return new Date(data).toLocaleDateString('en-US', {timeZone: 'UTC'});
             }
         },
     ];
