@@ -9,6 +9,9 @@ router.get('/', function(req, res, next) {
         'Defaults to returning most recent 50 read books from the database. \n' +
         'Use query parameter toread=T to return books with want to read flag set.'
       },
+      { name: 'Get Books by Read year', path: '/yearBooks', note:
+        'Use query parameter "year" to gets a list of books finished in the given year.'
+      },
       { name: 'Get Book by ID', path: '/getBook', note: 
         'Use query parameter "bookID" to enter a MongoDB ObjectID' 
       },
