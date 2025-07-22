@@ -25,6 +25,9 @@ var searchMyBooksRouter = require('./routes/searchBooks');
 var updateBookRouter = require('./routes/updateBook');
 var yearlyBookRouter = require('./routes/yearlyBooks');
 
+// reports
+var yearlyReportRouter = require('./routes/yearlyReport');
+
 var app = express();
 
 // view engine setup
@@ -47,6 +50,9 @@ app.use('/addBook', addBookRouter);
 app.use('/searchMyBooks', searchMyBooksRouter);
 app.use('/updateBook', updateBookRouter);
 app.use('/yearBooks', yearlyBookRouter);
+
+// reports
+app.use('/reports/yearly', yearlyReportRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
