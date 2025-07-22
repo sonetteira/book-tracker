@@ -23,6 +23,7 @@ var searchBookRouter = require('./routes/searchExternalBooks');
 var addBookRouter = require('./routes/addBook');
 var searchMyBooksRouter = require('./routes/searchBooks');
 var updateBookRouter = require('./routes/updateBook');
+var yearlyBookRouter = require('./routes/yearlyBooks');
 
 var app = express();
 
@@ -45,6 +46,7 @@ app.use('/searchBooks', searchBookRouter);
 app.use('/addBook', addBookRouter);
 app.use('/searchMyBooks', searchMyBooksRouter);
 app.use('/updateBook', updateBookRouter);
+app.use('/yearBooks', yearlyBookRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
