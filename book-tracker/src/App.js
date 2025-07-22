@@ -20,7 +20,7 @@ class App extends React.Component {
       <div className="container">
         <Router>
           <Routes>
-            <Route path="/:toRead?" element={<BookList />} />
+            <Route path="/:view?/:year?" element={<BookList />} />
             <Route path="/book/:id" element={<BookDetails />} />
             <Route path="/addBook" element={<AddBook />} />
             <Route path="/editBook/:id" element={<EditBook />} />

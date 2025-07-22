@@ -8,12 +8,23 @@ DataTable.use(DT);
 function BookTable() {
     const [apiResponse, setApiResponse] = useState([]);
     const table = useRef(null);
-    const { toRead } = useParams();
-    var toReadSet = toRead && toRead.toLocaleUpperCase() === 'TOREAD';
+    const urlParams = useParams();
+    var toReadSet = urlParams.view && urlParams.view.toLocaleUpperCase() === 'TOREAD';
+    var yearSet = urlParams.view && urlParams.view.toLocaleUpperCase() === 'YEAR';
+    var year = urlParams.year;
 
     useEffect(() => {
-        // set api call based on toRead parameter
-        const apiCall = toReadSet ? 'books?toread=T' : 'books';
+        // set api call based on view parameter
+        // const apiCall = toReadSet ? 'books?toread=T' : 'books';
+        const apiCall = (() => { 
+            // set the apiCall variable with the correct url based on the view params
+            if(toReadSet)
+                return 'books?toread=T';
+            else if(yearSet)
+                return `yearBooks?year=${year}`;
+            else
+                return 'books';
+        })();
         fetch(`${process.env.REACT_APP_API_URL}/${apiCall}`)
             .then(res => res.json())
             .then(setApiResponse)
@@ -29,7 +40,7 @@ function BookTable() {
         };
         // yes this is ugly. don't worry about it.
         let searchInput = document.getElementById('dt-search-1');
-        console.log(`search input: ${searchInput}`);
+        // console.log(`search input: ${searchInput}`);
         if(searchInput) {
             searchInput.addEventListener('keydown', handleKeyDown);
 
