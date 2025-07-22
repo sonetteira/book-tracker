@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
             $gte: new Date(`${year}-01-01T05:00:00.000Z`),
             $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
         }
-}).sort({ 'endDate' : 1 })
+        }).sort({ 'endDate' : 1 });
         res.json(books); // Respond with the list of books as JSON
     } catch (err) {
         console.error('Error fetching books:', err);
