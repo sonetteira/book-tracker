@@ -17,9 +17,26 @@ router.get('/', async (req, res) => {
             $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
         }});
         // breakdown by format
+        report.formatBreakdown = await Book.aggregate( [
+            { $match: { endDate: {
+                $gte: new Date(`${year}-01-01T05:00:00.000Z`),
+                $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
+            }}},
+            { $sortByCount: '$format' },
+            { $sort: {count: -1} }
+        ]);
+        // breakdown by genre
+        report.genreBreakdown = await Book.aggregate( [
+            { $match: { endDate: {
+                $gte: new Date(`${year}-01-01T05:00:00.000Z`),
+                $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
+            }}},
+            { $sortByCount: '$genre' },
+            { $sort: {count: -1} }
+        ]);
         // pages read
         report.pageCount = await Book.aggregate([
-            { $match: {endDate: {
+            { $match: { endDate: {
                 $gte: new Date(`${year}-01-01T05:00:00.000Z`),
                 $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
             }}},
@@ -31,10 +48,10 @@ router.get('/', async (req, res) => {
         ]);
         // longest book
         report.longest = await Book.aggregate([
-            { $match: {$and: 
+            { $match: { $and: 
                 [
-                    {pageCount: {$ne:null}},
-                    {endDate: {
+                    { pageCount: {$ne:null}},
+                    { endDate: {
                         $gte: new Date(`${year}-01-01T05:00:00.000Z`),
                         $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
                     }}
@@ -50,8 +67,8 @@ router.get('/', async (req, res) => {
         report.shortest = await Book.aggregate([
             { $match: {$and: 
                 [
-                    {pageCount: {$ne:null}},
-                    {endDate: {
+                    { pageCount: {$ne:null}},
+                    { endDate: {
                         $gte: new Date(`${year}-01-01T05:00:00.000Z`),
                         $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
                     }}
