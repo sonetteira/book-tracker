@@ -7,6 +7,7 @@ import BookList from './pages/booklist';
 import BookDetails from './pages/bookdetails';
 import AddBook from './pages/addbook';
 import EditBook from './pages/editBook';
+import Report from './pages/report';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends React.Component {
@@ -24,6 +25,7 @@ class App extends React.Component {
             <Route path="/book/:id" element={<BookDetails />} />
             <Route path="/addBook" element={<AddBook />} />
             <Route path="/editBook/:id" element={<EditBook />} />
+            <Route path="/report/yearly" element={<Report />} />
           </Routes>
         </Router>
       </div>

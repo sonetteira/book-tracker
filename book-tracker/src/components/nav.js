@@ -15,9 +15,9 @@ function Navigation() {
                     <Nav.Link href="/">Finished Books</Nav.Link>
                     <Nav.Link href="/toread">To Read</Nav.Link>
                     <Nav.Link href="/addBook">Add Book</Nav.Link>
-                    <NavDropdown title="Reports" id="basic-nav-dropdown" disabled>
-                        <NavDropdown.Item href="/yearlyReport">Yearly Report</NavDropdown.Item>
-                        <NavDropdown.Item href="/">Yearly Books by Author</NavDropdown.Item>
+                    <NavDropdown title="Reports" id="basic-nav-dropdown">
+                        <NavDropdown.Item href="/report/yearly">Yearly Report</NavDropdown.Item>
+                        <NavDropdown.Item href="/" disabled>Yearly Books by Author</NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
             </Navbar.Collapse>
