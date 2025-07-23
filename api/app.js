@@ -17,6 +17,7 @@ mongoose.connect(process.env.MONGO_URL)
 var Book = require('./models/book'); // Path to the Book model
 
 var indexRouter = require('./routes/index');
+var yearsRouter = require('./routes/getYears');
 var booksRouter = require('./routes/allBooks');
 var getBookRouter = require('./routes/getBook');
 var searchBookRouter = require('./routes/searchExternalBooks');
@@ -43,6 +44,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/getYears', yearsRouter);
 app.use('/books', booksRouter);
 app.use('/getBook', getBookRouter);
 app.use('/searchBooks', searchBookRouter);
