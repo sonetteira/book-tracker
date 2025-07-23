@@ -80,9 +80,36 @@ router.get('/', async (req, res) => {
             }},
             { $project: { _id: 0, title: '$title', minPages: 1 }}
         ]);
-        // top recommender by count
-        // quickest read
-        // slowest read
+        // recommenders breakdown
+        report.recommenderBreakdown = await Book.aggregate( [
+            { $match: { $and: [
+                { recommender: { $ne:null } },
+                { endDate: {
+                    $gte: new Date(`${year}-01-01T05:00:00.000Z`),
+                    $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
+                }}
+            ]}},
+            { $sortByCount: '$recommender' },
+            { $sort: {count: -1} }
+        ]);
+        // reading speed (in days)
+        report.readingSpeed = await Book.aggregate([
+            { $match: { $and: [
+                { startDate: { $ne:null } },
+                { endDate: {
+                    $gte: new Date(`${year}-01-01T05:00:00.000Z`),
+                    $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
+                }}
+            ]}},
+            { $addFields: {
+                seconds: { $subtract: ['$endDate', '$startDate']}
+            }},
+            { $addFields: {
+                days: { $divide: ['$seconds', 60*60*24*1000]}
+            } },
+            { $sort: {days: 1}},
+            { $project: {title: 1, days: 1}}
+        ]);
         res.json(report);
     } catch (err) {
         console.error('Error fetching report:', err);
