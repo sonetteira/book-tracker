@@ -29,7 +29,7 @@ function BookTable() {
             .then(res => res.json())
             .then(setApiResponse)
             .catch(err => console.error(err));
-    }, [toReadSet]);
+    }, [yearSet, year, toReadSet]);
 
     useEffect(() => {
         // handle enter key event on search bar

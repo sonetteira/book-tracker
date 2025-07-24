@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { AutoComplete } from 'primereact/autocomplete';
 
 function BookForm({ bookObject, handleSubmit, submitText }) {
     const {register, watch} = useForm();

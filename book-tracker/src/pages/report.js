@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import YearForm from '../components/yearForm';
 
 function Report() {
@@ -24,13 +23,15 @@ function Report() {
         <>
         <YearForm handleChange={handleChange}/>
         <div class="d-flex flex-row justify-content-around">
-            <div class="p-3"><h4>Total Books Read:</h4>{reportDetails && reportDetails.bookCount}</div>
-            <div class="p-3"><h4>Total Page Count:</h4>{reportDetails && reportDetails.pageCount[0].totalPageCount}</div>
+            <div class="p-3"><h4>Total Books Read:</h4>
+                {reportDetails && reportDetails.bookCount.toLocaleString()}</div>
+            <div class="p-3"><h4>Total Page Count:</h4>
+                {reportDetails && reportDetails.pageCount[0].totalPageCount.toLocaleString()}</div>
 
             <div class="p-3"><h3>Longest Book</h3>{reportDetails.longest[0].maxPages.title}<br/>
-                Pages: {reportDetails.longest[0].maxPages.pageCount}</div>
+                Pages: {reportDetails.longest[0].maxPages.pageCount.toLocaleString()}</div>
             <div class="p-3"><h3>Shortest Book</h3>{reportDetails.shortest[0].minPages.title}<br/>
-                Pages: {reportDetails.shortest[0].minPages.pageCount}</div>
+                Pages: {reportDetails.shortest[0].minPages.pageCount.toLocaleString()}</div>
         </div>
         </>
     );
