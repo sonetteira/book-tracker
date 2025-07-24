@@ -29,6 +29,10 @@ router.get('/', function(req, res, next) {
       {
         name: 'Update Book', path: '/updateBook', note:
         'Use POST request to update a book in the MongoDB using its ID.'
+      },
+      {
+        name: 'Get Years', path: 'getYears', note:
+        'Returns an array of all years for which book records are kept.'
       }
     ]
    });
