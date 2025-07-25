@@ -50,7 +50,7 @@ function BookForm({ bookObject, handleSubmit, submitText }) {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formWantToRead">
-                <Form.Check type="checkbox" name="notread" checked={bookObject.wantToRead}
+                <Form.Check type="checkbox" name="notread" defaultChecked={bookObject.wantToRead}
                 {...register("notread")} label="Want To Read" />
             </Form.Group>
 
