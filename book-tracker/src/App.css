@@ -83,10 +83,18 @@
 
 /* dark gray tile div */
 .grey-tile {
-  background-color: #363c47;
+  background-color: #2b2f36;
   border-radius: 25px;
 }
 
 .grey-tile h4 {
   color: #84ceff;
+}
+
+.grey-tile p {
+  color: #41b3ff;
+}
+
+.color-test {
+  color: #a09dd2;
 }

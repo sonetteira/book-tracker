@@ -40,7 +40,10 @@ function Report() {
 
     return (
         <>
-        <YearForm handleChange={handleChange}/>
+        <div className="d-flex flex-row justify-content-around">
+            <YearForm handleChange={handleChange}/>
+            <p><a href={`../year/${year}`} class="btn btn-secondary btn-lg active" role="button">See all {year} books</a></p>
+        </div>
         <div className="d-flex flex-row justify-content-around">
             <div className="p-2 m-3 grey-tile">
                 <h4 className="text-center">Total Books Read</h4>
@@ -51,6 +54,7 @@ function Report() {
                     nrOfLevels={4} 
                     percent={reportDetails.bookCount / 80}
                     hideText={true}
+                    needleColor="#cacaca"
                 />
             </div>
             <div className="p-2 m-3 grey-tile">
@@ -62,6 +66,7 @@ function Report() {
                     nrOfLevels={4} 
                     percent={reportDetails.pageCount[0].totalPageCount / 20000}
                     hideText={true}
+                    needleColor="#cacaca"
                 />
             </div>
         </div>
@@ -85,10 +90,9 @@ function Report() {
                     }}
                     >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="pgCount" fill="#82ca9d" activeBar={<Rectangle fill="gold" stroke="purple" />} />
+                    <XAxis dataKey="name" stroke="#84ceff" />
+                    <YAxis stroke="#84ceff" />
+                    <Bar dataKey="pgCount" fill="#82ca9d" activeBar={<Rectangle fill="gray" stroke="black" />} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
