@@ -13,18 +13,17 @@ function BookTable() {
     var yearSet = urlParams.view && urlParams.view.toLocaleUpperCase() === 'YEAR';
     var year = urlParams.year;
 
+    const apiCall = (() => { 
+        // set the apiCall variable with the correct url based on the view params
+        if(toReadSet)
+            return 'books?toread=T';
+        else if(yearSet)
+            return `yearBooks?year=${year}`;
+        else
+            return 'books';
+    })();
+
     useEffect(() => {
-        // set api call based on view parameter
-        // const apiCall = toReadSet ? 'books?toread=T' : 'books';
-        const apiCall = (() => { 
-            // set the apiCall variable with the correct url based on the view params
-            if(toReadSet)
-                return 'books?toread=T';
-            else if(yearSet)
-                return `yearBooks?year=${year}`;
-            else
-                return 'books';
-        })();
         fetch(`${process.env.REACT_APP_API_URL}/${apiCall}`)
             .then(res => res.json())
             .then(setApiResponse)
@@ -59,7 +58,7 @@ function BookTable() {
         let api = table.current.dt();
         let searchTerm = api.search();
         if (!searchTerm) {
-            fetch(`${process.env.REACT_APP_API_URL}/books`)
+            fetch(`${process.env.REACT_APP_API_URL}/${apiCall}`)
                 .then(res => res.json())
                 .then(data => {
                     api.clear().rows.add(data).draw();
