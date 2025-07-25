@@ -13,14 +13,14 @@ router.get('/', async (req, res) => {
         let report = {};
         // get the number of books finished during the year
         report.bookCount = await Book.countDocuments({endDate: {
-            $gte: new Date(`${year}-01-01T05:00:00.000Z`),
-            $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
+            $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+            $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
         }});
         // breakdown by format
         report.formatBreakdown = await Book.aggregate( [
             { $match: { endDate: {
-                $gte: new Date(`${year}-01-01T05:00:00.000Z`),
-                $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
+                $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
             }}},
             { $sortByCount: '$format' },
             { $sort: {count: -1} }
@@ -28,8 +28,8 @@ router.get('/', async (req, res) => {
         // breakdown by genre
         report.genreBreakdown = await Book.aggregate( [
             { $match: { endDate: {
-                $gte: new Date(`${year}-01-01T05:00:00.000Z`),
-                $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
+                $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
             }}},
             { $sortByCount: '$genre' },
             { $sort: {count: -1} }
@@ -37,8 +37,8 @@ router.get('/', async (req, res) => {
         // pages read
         report.pageCount = await Book.aggregate([
             { $match: { endDate: {
-                $gte: new Date(`${year}-01-01T05:00:00.000Z`),
-                $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
+                $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
             }}},
             { $group: {
                 _id: null,
@@ -52,8 +52,8 @@ router.get('/', async (req, res) => {
                 [
                     { pageCount: {$ne:null}},
                     { endDate: {
-                        $gte: new Date(`${year}-01-01T05:00:00.000Z`),
-                        $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
+                        $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                        $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
                     }}
                 ]
             }},
@@ -69,8 +69,8 @@ router.get('/', async (req, res) => {
                 [
                     { pageCount: {$ne:null}},
                     { endDate: {
-                        $gte: new Date(`${year}-01-01T05:00:00.000Z`),
-                        $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
+                        $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                        $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
                     }}
                 ]
             }},
@@ -85,8 +85,8 @@ router.get('/', async (req, res) => {
             { $match: { $and: [
                 { recommender: { $ne:null } },
                 { endDate: {
-                    $gte: new Date(`${year}-01-01T05:00:00.000Z`),
-                    $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
+                    $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                    $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
                 }}
             ]}},
             { $sortByCount: '$recommender' },
@@ -97,8 +97,8 @@ router.get('/', async (req, res) => {
             { $match: { $and: [
                 { startDate: { $ne:null } },
                 { endDate: {
-                    $gte: new Date(`${year}-01-01T05:00:00.000Z`),
-                    $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
+                    $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                    $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
                 }}
             ]}},
             { $addFields: {

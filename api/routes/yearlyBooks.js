@@ -11,8 +11,8 @@ router.get('/', async (req, res) => {
     try {
         // Fetch all the books read in the given year
         const books = await Book.find({endDate: {
-            $gte: new Date(`${year}-01-01T05:00:00.000Z`),
-            $lt: new Date(`${year+1}-01-01T05:00:00.000Z`)
+            $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+            $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
         }
         }).sort({ 'endDate' : 1 });
         res.json(books); // Respond with the list of books as JSON
