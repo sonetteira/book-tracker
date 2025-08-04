@@ -6,21 +6,21 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Book Tracker', 
     endpoints: [
       { name: 'Get Finished Books', path: '/books', note:
-        'Defaults to returning most recent 50 read books from the database. \n' +
+        'Defaults to returning most recent 50 read books from the database. ' +
         'Use query parameter toread=T to return books with want to read flag set.'
       },
       { name: 'Get Books by Read year', path: '/yearBooks', note:
-        'Use query parameter "year" to gets a list of books finished in the given year.'
+        'Use query parameter "year" to get a list of books finished in the given year.'
       },
       { name: 'Get Book by ID', path: '/getBook', note: 
         'Use query parameter "bookID" to enter a MongoDB ObjectID' 
       },
       { name: 'Search My Books', path: '/searchMyBooks', note:
-        'Searches MongoDB for books for a search query based on title, subtitle, author. \n' +
+        'Searches MongoDB for books for a search query based on title, subtitle, author. ' +
         'Use query parameter "searchTerm" to enter a search query.'
       },
       { name: 'Search External Books', path: '/searchBooks', note: 
-        'Searches Open Library API for books. \n' +
+        'Searches Open Library API for books. ' +
         'Use query parameter "q" to enter a search query.'
       },
       { name: 'Add Book', path: '/addBook', note: 
@@ -33,6 +33,12 @@ router.get('/', function(req, res, next) {
       {
         name: 'Get Years', path: 'getYears', note:
         'Returns an array of all years for which book records are kept.'
+      },
+      {
+        name: 'Report - Yearly', path: 'reports/yearly', note:
+        'Returns yearly report data, including: total page count, longest and shortest books, ' +
+        'reading speed per book, breakdowns of format, genre, recommender.' +
+        'User query parameter "year" to get the report for that year.'
       }
     ]
    });
