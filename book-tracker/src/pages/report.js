@@ -42,7 +42,9 @@ function Report() {
 
     useEffect(() => {
         if (!reportDetails) return;
+        // data is a set of objects formatted for recharts
         setData({
+            // longest and shortest books for bar chart
             longestShortest: [
                 {
                     name: 'longest',
@@ -53,12 +55,15 @@ function Report() {
                     pgCount: reportDetails.shortest[0].minPages.pageCount
                 }
             ],
+            // map format breakdown for bar chart
             formatBreakdown: (function () {
                 return reportDetails.formatBreakdown.map(o => ({name: o._id, count: o.count}));
             }()),
+            // map genre breakdown for bar chart
             genreBreakdown: (function () {
                 return reportDetails.genreBreakdown.map(o => ({name: o._id, count: o.count}));
             }()),
+            // choose top recommender (excluding blank string)
             topRecommender: (function () {
                 let target = 0;
                 if(reportDetails.recommenderBreakdown.length == 0) {
@@ -76,6 +81,26 @@ function Report() {
                 return {
                     name: reportDetails.recommenderBreakdown[target]._id,
                     count: reportDetails.recommenderBreakdown[target].count
+                }
+            }()),
+            // return quickest read
+            quickest: (function () {
+                if (reportDetails.readingSpeed.length == 0) {
+                    return null;
+                }
+                return {
+                    title: reportDetails.readingSpeed[0].title,
+                    days: reportDetails.readingSpeed[0].days
+                }
+            }()),
+            // return slowest read
+            slowest: (function () {
+                if (reportDetails.readingSpeed.length == 0) {
+                    return null;
+                }
+                return {
+                    title: reportDetails.readingSpeed[reportDetails.readingSpeed.length - 1].title,
+                    days: reportDetails.readingSpeed[reportDetails.readingSpeed.length - 1].days
                 }
             }()),
         });
@@ -204,6 +229,14 @@ function Report() {
                 <h4 className="text-center">Top Recommender</h4>
                 <p className="text-center">{data.topRecommender.name}</p>
                 <p className="text-center">Book Count: {data.topRecommender.count}</p>
+            </div>) }
+            {data.quickest && (<div className="p-3 m-3 grey-tile">
+                <h4 className="text-center">Fastest Read</h4>
+                <p className="text-center">{data.quickest.title}: {data.quickest.days} Days</p>
+            </div>) }
+            {data.slowest && (<div className="p-3 m-3 grey-tile">
+                <h4 className="text-center">Slowest Read</h4>
+                <p className="text-center">{data.slowest.title}: {data.slowest.days} Days</p>
             </div>) }
         </div>
         </>
