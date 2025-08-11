@@ -98,3 +98,13 @@
 .color-test {
   color: #a09dd2;
 }
+
+.custom-tooltip {
+  padding: 2px 10px 0px;
+  background-color: #a09dd2;
+  font-size: 1.5em;
+}
+
+.custom-tooltip p {
+  color: black;
+}

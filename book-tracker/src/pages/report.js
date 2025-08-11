@@ -8,6 +8,17 @@ function Report() {
     const [ year, setYear ] = useState(new Date().getFullYear());
     const [ data, setData ] = useState({});
 
+    const SimpleTooltip = ({ active, payload, label }) => {
+        const isVisible = active && payload && payload.length;
+        return (
+          <div className="custom-tooltip" style={{ visibility: isVisible ? 'visible' : 'hidden' }}>
+            {isVisible && (
+                <p className="label">{`${payload[0].value}`}</p>
+            )}
+          </div>
+        );
+      };
+
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}/reports/yearly?year=${encodeURIComponent(year)}`)
             .then(res => res.json())
@@ -125,7 +136,7 @@ function Report() {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" stroke="#84ceff" />
                     <YAxis stroke="#84ceff" />
-                    <Tooltip />
+                    <Tooltip content={SimpleTooltip} isAnimationActive={false} cursor={false} offset={-15} />
                     <Bar dataKey="count" fill="#82ca9d" activeBar={<Rectangle fill="gray" stroke="black" />} />
                     </BarChart>
                 {/* </ResponsiveContainer> */}
