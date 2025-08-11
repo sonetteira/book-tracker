@@ -13,11 +13,25 @@ function Report() {
         return (
           <div className="custom-tooltip" style={{ visibility: isVisible ? 'visible' : 'hidden' }}>
             {isVisible && (
-                <p className="label">{`${payload[0].value}`}</p>
+                <p>{`${payload[0].value}`}</p>
             )}
           </div>
         );
-      };
+    };
+
+    const LabeledTooltip = ({ active, payload, label }) => {
+        const isVisible = active && payload && payload.length;
+        return (
+          <div className="custom-tooltip" style={{ visibility: isVisible ? 'visible' : 'hidden' }}>
+            {isVisible && (
+                <>
+                <p className="label">{label}<br />
+                {payload[0].value}</p>
+                </>
+            )}
+          </div>
+        );
+    };
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}/reports/yearly?year=${encodeURIComponent(year)}`)
@@ -39,10 +53,12 @@ function Report() {
                     pgCount: reportDetails.shortest[0].minPages.pageCount
                 }
             ],
-            formatBreakdown: 
-                (function () {
-                    return reportDetails.formatBreakdown.map(o => ({name: o._id, count: o.count}));
-                }())
+            formatBreakdown: (function () {
+                return reportDetails.formatBreakdown.map(o => ({name: o._id, count: o.count}));
+            }()),
+            genreBreakdown: (function () {
+                return reportDetails.genreBreakdown.map(o => ({name: o._id, count: o.count}));
+            }()),
         });
     }, [reportDetails])
 
@@ -52,7 +68,6 @@ function Report() {
     }
 
     if (!reportDetails) return <><YearForm handleChange={handleChange}/><div>Loading...</div></>
-    if (data) console.log(data);
 
     return (
         <>
@@ -119,11 +134,11 @@ function Report() {
             </div>
         </div>
         <div className="d-flex flex-row justify-content-around">
-            <div className="p-3 m-3 grey-tile">
+            <div className="p-2 m-3 grey-tile">
                 <h4 className="text-center">Formats</h4>
                 {/* <ResponsiveContainer width="100%" height="100%"> */}
                     <BarChart
-                    width={500}
+                    width={400}
                     height={300}
                     data={data.formatBreakdown}
                     margin={{
@@ -137,6 +152,28 @@ function Report() {
                     <XAxis dataKey="name" stroke="#84ceff" />
                     <YAxis stroke="#84ceff" />
                     <Tooltip content={SimpleTooltip} isAnimationActive={false} cursor={false} offset={-15} />
+                    <Bar dataKey="count" fill="#82ca9d" activeBar={<Rectangle fill="gray" stroke="black" />} />
+                    </BarChart>
+                {/* </ResponsiveContainer> */}
+            </div>
+            <div className="p-4 m-3 grey-tile">
+                <h4 className="text-center">Genres</h4>
+                {/* <ResponsiveContainer width="100%" height="100%"> */}
+                    <BarChart
+                    width={800}
+                    height={300}
+                    data={data.genreBreakdown}
+                    margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                    }}
+                    >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" stroke="#84ceff" />
+                    <YAxis stroke="#84ceff" />
+                    <Tooltip content={LabeledTooltip} isAnimationActive={false} cursor={false} offset={-15} />
                     <Bar dataKey="count" fill="#82ca9d" activeBar={<Rectangle fill="gray" stroke="black" />} />
                     </BarChart>
                 {/* </ResponsiveContainer> */}
