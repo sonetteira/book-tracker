@@ -59,6 +59,25 @@ function Report() {
             genreBreakdown: (function () {
                 return reportDetails.genreBreakdown.map(o => ({name: o._id, count: o.count}));
             }()),
+            topRecommender: (function () {
+                let target = 0;
+                if(reportDetails.recommenderBreakdown.length == 0) {
+                    // no data
+                    return null;
+                }
+                if(reportDetails.recommenderBreakdown[0]._id == "") {
+                    if(reportDetails.recommenderBreakdown.length > 1) {
+                        // blank, return second entry
+                        target = 1;
+                    } else {
+                        return null;
+                    }
+                }
+                return {
+                    name: reportDetails.recommenderBreakdown[target]._id,
+                    count: reportDetails.recommenderBreakdown[target].count
+                }
+            }()),
         });
     }, [reportDetails])
 
@@ -68,6 +87,7 @@ function Report() {
     }
 
     if (!reportDetails) return <><YearForm handleChange={handleChange}/><div>Loading...</div></>
+    if (data) console.log(data);
 
     return (
         <>
@@ -178,6 +198,13 @@ function Report() {
                     </BarChart>
                 {/* </ResponsiveContainer> */}
             </div>
+        </div>
+        <div className="d-flex flex-row justify-content-around">
+            {data.topRecommender && (<div className="p-3 m-3 grey-tile">
+                <h4 className="text-center">Top Recommender</h4>
+                <p className="text-center">{data.topRecommender.name}</p>
+                <p className="text-center">Book Count: {data.topRecommender.count}</p>
+            </div>) }
         </div>
         </>
     );
