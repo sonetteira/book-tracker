@@ -27,7 +27,11 @@ function Report() {
                     name: 'shortest',
                     pgCount: reportDetails.shortest[0].minPages.pageCount
                 }
-            ]
+            ],
+            formatBreakdown: 
+                (function () {
+                    return reportDetails.formatBreakdown.map(o => ({name: o._id, count: o.count}));
+                }())
         });
     }, [reportDetails])
 
@@ -37,12 +41,13 @@ function Report() {
     }
 
     if (!reportDetails) return <><YearForm handleChange={handleChange}/><div>Loading...</div></>
+    if (data) console.log(data);
 
     return (
         <>
         <div className="d-flex flex-row justify-content-around">
             <YearForm handleChange={handleChange}/>
-            <p><a href={`../year/${year}`} class="btn btn-secondary btn-lg active" role="button">See all {year} books</a></p>
+            <p><a href={`../year/${year}`} className="btn btn-secondary btn-lg active" role="button">See all {year} books</a></p>
         </div>
         <div className="d-flex flex-row justify-content-around">
             <div className="p-2 m-3 grey-tile">
@@ -92,7 +97,7 @@ function Report() {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" stroke="#84ceff" />
                     <YAxis stroke="#84ceff" />
-                    <Bar dataKey="pgCount" fill="#82ca9d" activeBar={<Rectangle fill="gray" stroke="black" />} />
+                    <Bar dataKey="pgCount" fill="#82ca9d" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
@@ -100,6 +105,30 @@ function Report() {
                 <h4 className="text-center">Shortest Book</h4>
                 <p className="text-center">{reportDetails.shortest[0].minPages.title}</p>
                 <p className="text-center">Pages: {reportDetails.shortest[0].minPages.pageCount.toLocaleString()}</p>
+            </div>
+        </div>
+        <div className="d-flex flex-row justify-content-around">
+            <div className="p-3 m-3 grey-tile">
+                <h4 className="text-center">Formats</h4>
+                {/* <ResponsiveContainer width="100%" height="100%"> */}
+                    <BarChart
+                    width={500}
+                    height={300}
+                    data={data.formatBreakdown}
+                    margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                    }}
+                    >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" stroke="#84ceff" />
+                    <YAxis stroke="#84ceff" />
+                    <Tooltip />
+                    <Bar dataKey="count" fill="#82ca9d" activeBar={<Rectangle fill="gray" stroke="black" />} />
+                    </BarChart>
+                {/* </ResponsiveContainer> */}
             </div>
         </div>
         </>
