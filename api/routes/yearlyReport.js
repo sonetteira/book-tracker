@@ -106,9 +106,12 @@ router.get('/', async (req, res) => {
             }},
             { $addFields: {
                 days: { $divide: ['$seconds', 60*60*24*1000]}
-            } },
-            { $sort: {days: 1}},
-            { $project: {title: 1, days: 1}}
+            }},
+            { $addFields: {
+                pagesPerDay: { $divide: ['$pageCount', '$days'] }
+            }},
+            { $sort: {pagesPerDay: -1}},
+            { $project: {title: 1, days: 1, pageCount: 1, pagesPerDay: 1}}
         ]);
         res.json(report);
     } catch (err) {

@@ -90,7 +90,8 @@ function Report() {
                 }
                 return {
                     title: reportDetails.readingSpeed[0].title,
-                    days: reportDetails.readingSpeed[0].days
+                    days: reportDetails.readingSpeed[0].days,
+                    pagesPerDay: reportDetails.readingSpeed[0].pagesPerDay
                 }
             }()),
             // return slowest read
@@ -100,7 +101,8 @@ function Report() {
                 }
                 return {
                     title: reportDetails.readingSpeed[reportDetails.readingSpeed.length - 1].title,
-                    days: reportDetails.readingSpeed[reportDetails.readingSpeed.length - 1].days
+                    days: reportDetails.readingSpeed[reportDetails.readingSpeed.length - 1].days,
+                    pagesPerDay: reportDetails.readingSpeed[reportDetails.readingSpeed.length - 1].pagesPerDay
                 }
             }()),
         });
@@ -233,10 +235,12 @@ function Report() {
             {data.quickest && (<div className="p-3 m-3 grey-tile">
                 <h4 className="text-center">Fastest Read</h4>
                 <p className="text-center">{data.quickest.title}: {data.quickest.days} Days</p>
+                <p className="text-center">Pages Per Day: {Math.round(data.quickest.pagesPerDay)}</p>
             </div>) }
             {data.slowest && (<div className="p-3 m-3 grey-tile">
                 <h4 className="text-center">Slowest Read</h4>
                 <p className="text-center">{data.slowest.title}: {data.slowest.days} Days</p>
+                <p className="text-center">Pages Per Day: {Math.round(data.slowest.pagesPerDay)}</p>
             </div>) }
         </div>
         </>
