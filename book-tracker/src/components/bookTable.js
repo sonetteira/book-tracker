@@ -32,6 +32,8 @@ function YearBookTable({year, startOrder}) {
             render: data => !data ? '' : capitalizeFirstLetter(data)
         },
         { title: 'Recommender', data: 'recommender' },
+        { title: 'Days', data: 'days' },
+        { title: 'Pages per Day', data: 'pagesPerDay', render: data => !data ? '' : Math.round(data) }
         // read time
     ]
 
