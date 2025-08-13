@@ -17,7 +17,6 @@ router.get('/', async (req, res) => {
         // }).sort({ 'endDate' : 1 });
         const books = await Book.aggregate([
             { $match: { $and: [
-                { startDate: { $ne:null } },
                 { endDate: {
                     $gte: new Date(`${year}-01-01T00:00:00.000Z`),
                     $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
