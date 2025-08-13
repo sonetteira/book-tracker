@@ -1,12 +1,24 @@
 import { useState, useEffect } from 'react';
 import YearForm from '../components/yearForm';
-import GaugeChart from 'react-gauge-chart'
+import Modal from '../components/modal';
+import YearBookTable from '../components/bookTable';
+import GaugeChart from 'react-gauge-chart';
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 function Report() {
     const [ reportDetails, setReportDetails ] = useState(null);
     const [ year, setYear ] = useState(new Date().getFullYear());
     const [ data, setData ] = useState({});
+    const [ open, setOpen ] = useState(false);
+    const [ order, setOrder ] = useState("[0, 'asc']");
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
 
     const SimpleTooltip = ({ active, payload, label }) => {
         const isVisible = active && payload && payload.length;
@@ -114,7 +126,7 @@ function Report() {
     }
 
     if (!reportDetails) return <><YearForm handleChange={handleChange}/><div>Loading...</div></>
-    if (data) console.log(data);
+    // if (data) console.log(data);
 
     return (
         <>
@@ -123,7 +135,9 @@ function Report() {
             <p><a href={`../year/${year}`} className="btn btn-secondary btn-lg active" role="button">See all {year} books</a></p>
         </div>
         <div className="d-flex flex-row justify-content-around">
-            <div className="p-2 m-3 grey-tile">
+            <div className="p-2 m-3 grey-tile" onClick={(e) => {
+                setOrder("[0, 'asc']"); handleOpen();
+              }}>
                 <h4 className="text-center">Total Books Read</h4>
                 <p className="text-center">{reportDetails && reportDetails.bookCount.toLocaleString()}</p>
                 {/* max books set to 80 */}
@@ -135,7 +149,9 @@ function Report() {
                     needleColor="#cacaca"
                 />
             </div>
-            <div className="p-2 m-3 grey-tile">
+            <div className="p-2 m-3 grey-tile" onClick={(e) => {
+                setOrder("[2, 'asc']"); handleOpen();
+              }}>
                 <h4 className="text-center">Total Page Count</h4>
                 <p className="text-center">{reportDetails && reportDetails.pageCount[0].totalPageCount.toLocaleString()}</p>
                 {/* max pages set to 20,000 */}
@@ -149,12 +165,16 @@ function Report() {
             </div>
         </div>
         <div className="d-flex flex-row justify-content-around">
-            <div className="p-3 m-3 grey-tile">
+            <div className="p-3 m-3 grey-tile" onClick={(e) => {
+                setOrder("[2, 'desc']"); handleOpen();
+              }}>
                 <h4 className="text-center">Longest Book</h4>
                 <p className="text-center">{reportDetails.longest[0].maxPages.title}</p>
                 <p className="text-center">Pages: {reportDetails.longest[0].maxPages.pageCount.toLocaleString()}</p>
             </div>
-            <div className="p-2 m-3 grey-tile w-50">
+            <div className="p-2 m-3 grey-tile w-50" onClick={(e) => {
+                setOrder("[2, 'asc']"); handleOpen();
+              }}>
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                     width={500}
@@ -174,14 +194,18 @@ function Report() {
                     </BarChart>
                 </ResponsiveContainer>
             </div>
-            <div className="p-3 m-3 grey-tile">
+            <div className="p-3 m-3 grey-tile" onClick={(e) => {
+                setOrder([4, 'asc']); handleOpen();
+              }}>
                 <h4 className="text-center">Shortest Book</h4>
                 <p className="text-center">{reportDetails.shortest[0].minPages.title}</p>
                 <p className="text-center">Pages: {reportDetails.shortest[0].minPages.pageCount.toLocaleString()}</p>
             </div>
         </div>
         <div className="d-flex flex-row justify-content-around">
-            <div className="p-2 m-3 grey-tile">
+            <div className="p-2 m-3 grey-tile" onClick={(e) => {
+                setOrder([6, 'asc']); handleOpen();
+              }}>
                 <h4 className="text-center">Formats</h4>
                 {/* <ResponsiveContainer width="100%" height="100%"> */}
                     <BarChart
@@ -203,7 +227,9 @@ function Report() {
                     </BarChart>
                 {/* </ResponsiveContainer> */}
             </div>
-            <div className="p-4 m-3 grey-tile">
+            <div className="p-4 m-3 grey-tile" onClick={(e) => {
+                setOrder([5, 'asc']); handleOpen();
+              }}>
                 <h4 className="text-center">Genres</h4>
                 {/* <ResponsiveContainer width="100%" height="100%"> */}
                     <BarChart
@@ -243,6 +269,9 @@ function Report() {
                 <p className="text-center">Pages Per Day: {Math.round(data.slowest.pagesPerDay)}</p>
             </div>) }
         </div>
+        <Modal isOpen={open} onClose={handleClose}>
+            <YearBookTable year={year} startOrder={order} ></YearBookTable>
+        </Modal>
         </>
     );
 }
