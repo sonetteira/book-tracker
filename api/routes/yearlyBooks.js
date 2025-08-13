@@ -10,11 +10,28 @@ router.get('/', async (req, res) => {
     }
     try {
         // Fetch all the books read in the given year
-        const books = await Book.find({endDate: {
-            $gte: new Date(`${year}-01-01T00:00:00.000Z`),
-            $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
-        }
-        }).sort({ 'endDate' : 1 });
+        // const books = await Book.find({endDate: {
+        //     $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+        //     $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
+        // }
+        // }).sort({ 'endDate' : 1 });
+        const books = await Book.aggregate([
+            { $match: { $and: [
+                { startDate: { $ne:null } },
+                { endDate: {
+                    $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                    $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
+                }}
+            ]}},
+            { $addFields: {
+                days: { $divide: [{$subtract: ['$endDate', '$startDate']}, 60*60*24*1000]}
+            }},
+            { $addFields: {
+                pagesPerDay: { $divide: ['$pageCount', '$days'] }
+            }},
+            { $sort: {endDate: 1}},
+            // { $project: {title: 1, days: 1, pageCount: 1, pagesPerDay: 1}}
+        ]);
         res.json(books); // Respond with the list of books as JSON
     } catch (err) {
         console.error('Error fetching books:', err);
