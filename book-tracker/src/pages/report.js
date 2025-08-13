@@ -95,6 +95,10 @@ function Report() {
                     count: reportDetails.recommenderBreakdown[target].count
                 }
             }()),
+            // map recommender breakdown for bar chart. exclude blank recommenders
+            recommenderBreakdown: (function () {
+                return reportDetails.recommenderBreakdown.filter(o => o._id != "").map(o => ({name: o._id, count: o.count}));
+            }()),
             // return quickest read
             quickest: (function () {
                 if (reportDetails.readingSpeed.length == 0) {
@@ -232,39 +236,66 @@ function Report() {
               }}>
                 <h4 className="text-center">Genres</h4>
                 {/* <ResponsiveContainer width="100%" height="100%"> */}
-                    <BarChart
-                    width={800}
-                    height={300}
-                    data={data.genreBreakdown}
-                    margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                    }}
-                    >
+                <BarChart
+                width={800}
+                height={300}
+                data={data.genreBreakdown}
+                margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+                >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" stroke="#84ceff" />
                     <YAxis stroke="#84ceff" />
                     <Tooltip content={LabeledTooltip} isAnimationActive={false} cursor={false} offset={-15} />
                     <Bar dataKey="count" fill="#82ca9d" activeBar={<Rectangle fill="gray" stroke="black" />} />
-                    </BarChart>
+                </BarChart>
                 {/* </ResponsiveContainer> */}
             </div>
         </div>
-        <div className="d-flex flex-row justify-content-around">
-            {data.topRecommender && (<div className="p-3 m-3 grey-tile">
+        {data.topRecommender && (<div className="d-flex flex-row justify-content-around">
+            <div className="p-3 m-3 grey-tile" onClick={(e) => {
+                setOrder([5, 'desc']); handleOpen();
+              }}>
                 <h4 className="text-center">Top Recommender</h4>
                 <p className="text-center">{data.topRecommender.name}</p>
                 <p className="text-center">Book Count: {data.topRecommender.count}</p>
-            </div>) }
+            </div>
+            <div className="p-4 m-3 grey-tile w-50" onClick={(e) => {
+                setOrder([5, 'desc']); handleOpen();
+              }}>
+                <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                width={500}
+                height={300}
+                data={data.recommenderBreakdown}
+                margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" stroke="#84ceff" />
+                    <YAxis stroke="#84ceff" />
+                    <Tooltip content={LabeledTooltip} isAnimationActive={false} cursor={false} offset={-15} />
+                    <Bar dataKey="count" fill="#82ca9d" activeBar={<Rectangle fill="gray" stroke="black" />} />
+                </BarChart>
+                </ResponsiveContainer>
+            </div>
+        </div>) }
+        <div className="d-flex flex-row justify-content-around">
             {data.quickest && (<div className="p-3 m-3 grey-tile">
-                <h4 className="text-center">Fastest Read</h4>
+                <h4 className="text-center">Fastest Reading Speed</h4>
                 <p className="text-center">{data.quickest.title}: {data.quickest.days} Days</p>
                 <p className="text-center">Pages Per Day: {Math.round(data.quickest.pagesPerDay)}</p>
             </div>) }
             {data.slowest && (<div className="p-3 m-3 grey-tile">
-                <h4 className="text-center">Slowest Read</h4>
+                <h4 className="text-center">Slowest Reading Speed</h4>
                 <p className="text-center">{data.slowest.title}: {data.slowest.days} Days</p>
                 <p className="text-center">Pages Per Day: {Math.round(data.slowest.pagesPerDay)}</p>
             </div>) }
