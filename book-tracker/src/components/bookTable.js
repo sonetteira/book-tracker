@@ -45,8 +45,8 @@ function YearBookTable({year, startOrder}) {
                     pageLength: 25,
                     searching: false,
                     ordering: true,
-                    // order: [[{startOrder}]],
-                    order: [[0, 'asc']]
+                    order: [...startOrder],
+                    // order: [[0, 'asc']]
                 }}
             />
         </div>

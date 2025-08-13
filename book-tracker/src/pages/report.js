@@ -10,7 +10,7 @@ function Report() {
     const [ year, setYear ] = useState(new Date().getFullYear());
     const [ data, setData ] = useState({});
     const [ open, setOpen ] = useState(false);
-    const [ order, setOrder ] = useState("[0, 'asc']");
+    const [ order, setOrder ] = useState([0, 'asc']);
 
     const handleClose = () => {
         setOpen(false);
@@ -136,7 +136,7 @@ function Report() {
         </div>
         <div className="d-flex flex-row justify-content-around">
             <div className="p-2 m-3 grey-tile" onClick={(e) => {
-                setOrder("[0, 'asc']"); handleOpen();
+                setOrder([0, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">Total Books Read</h4>
                 <p className="text-center">{reportDetails && reportDetails.bookCount.toLocaleString()}</p>
@@ -150,7 +150,7 @@ function Report() {
                 />
             </div>
             <div className="p-2 m-3 grey-tile" onClick={(e) => {
-                setOrder("[2, 'asc']"); handleOpen();
+                setOrder([2, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">Total Page Count</h4>
                 <p className="text-center">{reportDetails && reportDetails.pageCount[0].totalPageCount.toLocaleString()}</p>
@@ -166,14 +166,14 @@ function Report() {
         </div>
         <div className="d-flex flex-row justify-content-around">
             <div className="p-3 m-3 grey-tile" onClick={(e) => {
-                setOrder("[2, 'desc']"); handleOpen();
+                setOrder([2, 'desc']); handleOpen();
               }}>
                 <h4 className="text-center">Longest Book</h4>
                 <p className="text-center">{reportDetails.longest[0].maxPages.title}</p>
                 <p className="text-center">Pages: {reportDetails.longest[0].maxPages.pageCount.toLocaleString()}</p>
             </div>
             <div className="p-2 m-3 grey-tile w-50" onClick={(e) => {
-                setOrder("[2, 'asc']"); handleOpen();
+                setOrder([2, 'asc']); handleOpen();
               }}>
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart
@@ -195,7 +195,7 @@ function Report() {
                 </ResponsiveContainer>
             </div>
             <div className="p-3 m-3 grey-tile" onClick={(e) => {
-                setOrder([4, 'asc']); handleOpen();
+                setOrder([2, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">Shortest Book</h4>
                 <p className="text-center">{reportDetails.shortest[0].minPages.title}</p>
@@ -204,7 +204,7 @@ function Report() {
         </div>
         <div className="d-flex flex-row justify-content-around">
             <div className="p-2 m-3 grey-tile" onClick={(e) => {
-                setOrder([6, 'asc']); handleOpen();
+                setOrder([4, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">Formats</h4>
                 {/* <ResponsiveContainer width="100%" height="100%"> */}
@@ -228,7 +228,7 @@ function Report() {
                 {/* </ResponsiveContainer> */}
             </div>
             <div className="p-4 m-3 grey-tile" onClick={(e) => {
-                setOrder([5, 'asc']); handleOpen();
+                setOrder([3, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">Genres</h4>
                 {/* <ResponsiveContainer width="100%" height="100%"> */}
