@@ -2,8 +2,11 @@ import { useState, useEffect } from 'react';
 import YearForm from '../components/yearForm';
 import Modal from '../components/modal';
 import YearBookTable from '../components/bookTable';
+import { SimpleTooltip, LabeledTooltip, TitledTooltip } from '../components/tooltips'
 import GaugeChart from 'react-gauge-chart';
-import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+    LineChart, Legend, Line
+ } from 'recharts';
 
 function Report() {
     const [ reportDetails, setReportDetails ] = useState(null);
@@ -31,30 +34,9 @@ function Report() {
         return {max: max, min: min};
     }
 
-    const SimpleTooltip = ({ active, payload, label }) => {
-        const isVisible = active && payload && payload.length;
-        return (
-          <div className="custom-tooltip" style={{ visibility: isVisible ? 'visible' : 'hidden' }}>
-            {isVisible && (
-                <p>{`${payload[0].value}`}</p>
-            )}
-          </div>
-        );
-    };
-
-    const LabeledTooltip = ({ active, payload, label }) => {
-        const isVisible = active && payload && payload.length;
-        return (
-          <div className="custom-tooltip" style={{ visibility: isVisible ? 'visible' : 'hidden' }}>
-            {isVisible && (
-                <>
-                <p className="label">{label}<br />
-                {payload[0].value}</p>
-                </>
-            )}
-          </div>
-        );
-    };
+    const dateFormatter = (date) => {
+        return new Date(date).toLocaleDateString('en-US', {timeZone: 'UTC'});
+    }
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}/reports/yearly?year=${encodeURIComponent(year)}`)
@@ -67,6 +49,7 @@ function Report() {
         if (!reportDetails) return;
         // data is a set of objects formatted for recharts
         var poles = findMaxMin(reportDetails.readingSpeed, 'days');
+        var speedPoles = findMaxMin(reportDetails.readingSpeed, 'pagesPerDay');
         setData({
             // longest and shortest books for bar chart
             longestShortest: [
@@ -137,9 +120,9 @@ function Report() {
                     return null;
                 }
                 return {
-                    title: reportDetails.readingSpeed[0].title,
-                    days: reportDetails.readingSpeed[0].days,
-                    pagesPerDay: reportDetails.readingSpeed[0].pagesPerDay
+                    title: speedPoles.max.title,
+                    days: speedPoles.max.days,
+                    pagesPerDay: speedPoles.max.pagesPerDay
                 }
             }()),
             // return slowest reading time
@@ -148,11 +131,15 @@ function Report() {
                     return null;
                 }
                 return {
-                    title: reportDetails.readingSpeed[reportDetails.readingSpeed.length - 1].title,
-                    days: reportDetails.readingSpeed[reportDetails.readingSpeed.length - 1].days,
-                    pagesPerDay: reportDetails.readingSpeed[reportDetails.readingSpeed.length - 1].pagesPerDay
+                    title: speedPoles.min.title,
+                    days: speedPoles.min.days,
+                    pagesPerDay: speedPoles.min.pagesPerDay
                 }
             }()),
+            // map reading speed over time for line chart
+            // readingSpeed: (function () {
+            //     return reportDetails.readingSpeed.map(o => ({name: o._id, count: o.count}));
+            // }()),
         });
     }, [reportDetails])
 
@@ -347,6 +334,25 @@ function Report() {
                 <p className="text-center">{data.slowest.title}: {data.slowest.days} Days</p>
                 <p className="text-center">Pages Per Day: {Math.round(data.slowest.pagesPerDay)}</p>
             </div>) }
+        </div>
+        <div className="d-flex flex-row justify-content-around">
+            <div className="p-3 m-3 grey-tile" onClick={(e) => {
+                setOrder([7, 'desc']); handleOpen();
+              }}>
+                <h4 className="text-center">Reading Speed</h4>
+                <LineChart width={730} height={250} data={reportDetails.readingSpeed}
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="endDate" stroke="#84ceff" tickFormatter={dateFormatter} />
+                    <YAxis stroke="#84ceff" />
+                    <Tooltip includeHidden={true} content={TitledTooltip}/>
+                    <Line type="monotone" dataKey="pagesPerDay" stroke="#8884d8" />
+                    {/* hidden "lines" for inclusion in customized tooltip */}
+                    <Line dataKey="title" hide={true} /> 
+                    <Line dataKey="pageCount" hide={true} />
+                    <Line dataKey="days" hide={true} />
+                </LineChart>
+            </div>
         </div>
         <Modal isOpen={open} onClose={handleClose}>
             <YearBookTable year={year} startOrder={order} ></YearBookTable>

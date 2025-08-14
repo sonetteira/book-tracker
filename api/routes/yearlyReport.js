@@ -110,8 +110,8 @@ router.get('/', async (req, res) => {
             { $addFields: {
                 pagesPerDay: { $divide: ['$pageCount', '$days'] }
             }},
-            { $sort: {pagesPerDay: -1}},
-            { $project: {title: 1, days: 1, pageCount: 1, pagesPerDay: 1}}
+            { $sort: { endDate: 1 }},
+            { $project: {title: 1, endDate: 1, days: 1, pageCount: 1, pagesPerDay: 1}}
         ]);
         res.json(report);
     } catch (err) {
