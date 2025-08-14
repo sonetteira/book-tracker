@@ -35,6 +35,34 @@ function Report() {
         return {max: max, min: min};
     }
 
+    // find the top count of a given breakdown prop in a json array
+    const findTopCount = (array, nameProp, countProp, maxLen) => {
+        let target = 0;
+        let highCount = null;
+        let names = [];
+        if(array.length == 0) {
+            // no data
+            return null;
+        }
+        // if(reportDetails.recommenderBreakdown[0]._id == "")
+        if(array[0][nameProp] == "")
+            target++;
+        // while(reportDetails.recommenderBreakdown.length > target && 
+        // (highCount == null || reportDetails.recommenderBreakdown[target].count == highCount)) {
+        while(array.length > target && (maxLen === undefined || names.length < maxLen) &&
+        (highCount == null || array[target][countProp] == highCount)) {
+            // highCount = reportDetails.recommenderBreakdown[target].count;
+            // names.push(reportDetails.recommenderBreakdown[target]._id);
+            highCount = array[target][countProp];
+            names.push(array[target][nameProp]);
+            target++;
+        }
+        return {
+            name: names.join(', '),
+            count: highCount
+        }
+    }
+
     const dateFormatter = (date) => {
         return new Date(date).toLocaleDateString('en-US', {timeZone: 'UTC'});
     }
@@ -65,27 +93,13 @@ function Report() {
                     pgCount: reportDetails.shortest[0].minPages.pageCount
                 }
             ],
-            // choose top recommender (excluding blank string)
+            // find top author (excluding blank string)
+            topAuthor: (function () {
+                return findTopCount(reportDetails.authorBreakdown, '_id', 'count', 4);
+            }()),
+            // find top recommender (excluding blank string)
             topRecommender: (function () {
-                let target = 0;
-                let highCount = null;
-                let n = [];
-                if(reportDetails.recommenderBreakdown.length == 0) {
-                    // no data
-                    return null;
-                }
-                if(reportDetails.recommenderBreakdown[0]._id == "")
-                    target++;
-                while(reportDetails.recommenderBreakdown.length > target && 
-                (highCount == null || reportDetails.recommenderBreakdown[target].count == highCount)) {
-                    highCount = reportDetails.recommenderBreakdown[target].count;
-                    n.push(reportDetails.recommenderBreakdown[target]._id);
-                    target++;
-                }
-                return {
-                    name: n.join(', '),
-                    count: highCount
-                }
+                return findTopCount(reportDetails.recommenderBreakdown, '_id', 'count');
             }()),
             // return quickest read
             quickestBook: (function () {
@@ -265,6 +279,40 @@ function Report() {
                 </BarChart>
             </div>
         </div>
+        {/* Authors: top, bar chart of top 5 */}
+        {data.topAuthor && data.topAuthor.count != null && 
+        (<div className="d-flex flex-row justify-content-around">
+            <div className="p-3 m-3 grey-tile" onClick={(e) => {
+                setOrder([2, 'desc']); handleOpen();
+              }}>
+                <h4 className="text-center">Top Author</h4>
+                <p className="text-center">{data.topAuthor.name}</p>
+                <p className="text-center">Total Books: {data.topAuthor.count}</p>
+            </div>
+            <div className="p-4 m-3 grey-tile w-50" onClick={(e) => {
+                setOrder([2, 'desc']); handleOpen();
+              }}>
+                <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                width={500}
+                height={300}
+                data={reportDetails.authorBreakdown.filter(o => o._id != "").slice(0,5)}
+                margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="_id" stroke="#84ceff" />
+                    <YAxis stroke="#84ceff" />
+                    <Tooltip content={LabeledTooltip} isAnimationActive={false} cursor={false} offset={-15} />
+                    <Bar dataKey="count" fill="#82ca9d" activeBar={<Rectangle fill="gray" stroke="black" />} />
+                </BarChart>
+                </ResponsiveContainer>
+            </div>
+        </div>) }
         {/* Recommender: top, bar chart */}
         {data.topRecommender && data.topRecommender.count != null && 
         (<div className="d-flex flex-row justify-content-around">

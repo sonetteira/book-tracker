@@ -92,6 +92,18 @@ router.get('/', async (req, res) => {
             { $sortByCount: '$recommender' },
             { $sort: {count: -1} }
         ]);
+        // authors breakdown
+        report.authorBreakdown = await Book.aggregate([
+            { $match: { $and: [
+                { author: { $ne:null } },
+                { endDate: {
+                    $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                    $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
+                }}
+            ]}},
+            { $sortByCount: '$author' },
+            { $sort: {count: -1} }
+        ]);
         // reading speed (in days)
         report.readingSpeed = await Book.aggregate([
             { $match: { $and: [
