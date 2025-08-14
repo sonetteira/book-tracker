@@ -68,21 +68,23 @@ function Report() {
             // choose top recommender (excluding blank string)
             topRecommender: (function () {
                 let target = 0;
+                let highCount = null;
+                let n = [];
                 if(reportDetails.recommenderBreakdown.length == 0) {
                     // no data
                     return null;
                 }
-                if(reportDetails.recommenderBreakdown[0]._id == "") {
-                    if(reportDetails.recommenderBreakdown.length > 1) {
-                        // blank, return second entry
-                        target = 1;
-                    } else {
-                        return null;
-                    }
+                if(reportDetails.recommenderBreakdown[0]._id == "")
+                    target++;
+                while(reportDetails.recommenderBreakdown.length > target && 
+                (highCount == null || reportDetails.recommenderBreakdown[target].count == highCount)) {
+                    highCount = reportDetails.recommenderBreakdown[target].count;
+                    n.push(reportDetails.recommenderBreakdown[target]._id);
+                    target++;
                 }
                 return {
-                    name: reportDetails.recommenderBreakdown[target]._id,
-                    count: reportDetails.recommenderBreakdown[target].count
+                    name: n.join(', '),
+                    count: highCount
                 }
             }()),
             // return quickest read
@@ -270,7 +272,7 @@ function Report() {
               }}>
                 <h4 className="text-center">Top Recommender</h4>
                 <p className="text-center">{data.topRecommender.name}</p>
-                <p className="text-center">Book Count: {data.topRecommender.count}</p>
+                <p className="text-center">Books Recommended: {data.topRecommender.count}</p>
             </div>
             <div className="p-4 m-3 grey-tile w-50" onClick={(e) => {
                 setOrder([5, 'desc']); handleOpen();
