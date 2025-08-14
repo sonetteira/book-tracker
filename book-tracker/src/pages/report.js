@@ -20,6 +20,17 @@ function Report() {
         setOpen(true);
     };
 
+    const findMaxMin = (array, prop) => {
+        var max, min;
+        array.forEach(el => {
+            if( max == null || el[prop] > max[prop] )
+                max = el;
+            if( min == null || el[prop] < min[prop] )
+                min = el;
+        });
+        return {max: max, min: min};
+    }
+
     const SimpleTooltip = ({ active, payload, label }) => {
         const isVisible = active && payload && payload.length;
         return (
@@ -55,6 +66,7 @@ function Report() {
     useEffect(() => {
         if (!reportDetails) return;
         // data is a set of objects formatted for recharts
+        var poles = findMaxMin(reportDetails.readingSpeed, 'days');
         setData({
             // longest and shortest books for bar chart
             longestShortest: [
@@ -100,6 +112,26 @@ function Report() {
                 return reportDetails.recommenderBreakdown.filter(o => o._id != "").map(o => ({name: o._id, count: o.count}));
             }()),
             // return quickest read
+            quickestBook: (function () {
+                if (reportDetails.readingSpeed.length == 0) {
+                    return null;
+                }
+                return {
+                    title: poles.min.title,
+                    days: poles.min.days
+                }
+            }()),
+            // return slowest read
+            slowestBook: (function () {
+                if (reportDetails.readingSpeed.length == 0) {
+                    return null;
+                }
+                return {
+                    title: poles.max.title,
+                    days: poles.max.days
+                }
+            }()),
+            // return quickest reading time
             quickest: (function () {
                 if (reportDetails.readingSpeed.length == 0) {
                     return null;
@@ -110,7 +142,7 @@ function Report() {
                     pagesPerDay: reportDetails.readingSpeed[0].pagesPerDay
                 }
             }()),
-            // return slowest read
+            // return slowest reading time
             slowest: (function () {
                 if (reportDetails.readingSpeed.length == 0) {
                     return null;
@@ -130,7 +162,7 @@ function Report() {
     }
 
     if (!reportDetails) return <><YearForm handleChange={handleChange}/><div>Loading...</div></>
-    // if (data) console.log(data);
+    if (data) console.log(data);
 
     return (
         <>
@@ -289,12 +321,28 @@ function Report() {
             </div>
         </div>) }
         <div className="d-flex flex-row justify-content-around">
-            {data.quickest && (<div className="p-3 m-3 grey-tile">
+            {data.quickestBook && (<div className="p-3 m-3 grey-tile" onClick={(e) => {
+                setOrder([6, 'asc']); handleOpen();
+              }}>
+                <h4 className="text-center">Fastest Book</h4>
+                <p className="text-center">{data.quickestBook.title}: {data.quickestBook.days} Days</p>
+            </div>) }
+            {data.quickest && (<div className="p-3 m-3 grey-tile" onClick={(e) => {
+                setOrder([7, 'desc']); handleOpen();
+              }}>
                 <h4 className="text-center">Fastest Reading Speed</h4>
                 <p className="text-center">{data.quickest.title}: {data.quickest.days} Days</p>
                 <p className="text-center">Pages Per Day: {Math.round(data.quickest.pagesPerDay)}</p>
             </div>) }
-            {data.slowest && (<div className="p-3 m-3 grey-tile">
+            {data.slowestBook && (<div className="p-3 m-3 grey-tile" onClick={(e) => {
+                setOrder([6, 'desc']); handleOpen();
+              }}>
+                <h4 className="text-center">Slowest Book</h4>
+                <p className="text-center">{data.slowestBook.title}: {data.slowestBook.days} Days</p>
+            </div>) }
+            {data.slowest && (<div className="p-3 m-3 grey-tile" onClick={(e) => {
+                setOrder([7, 'asc']); handleOpen();
+              }}>
                 <h4 className="text-center">Slowest Reading Speed</h4>
                 <p className="text-center">{data.slowest.title}: {data.slowest.days} Days</p>
                 <p className="text-center">Pages Per Day: {Math.round(data.slowest.pagesPerDay)}</p>
