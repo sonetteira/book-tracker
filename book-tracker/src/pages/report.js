@@ -139,7 +139,7 @@ function Report() {
     }
 
     if (!reportDetails) return <><YearForm handleChange={handleChange}/><div>Loading...</div></>
-    // if (data) console.log(data);
+    if (data) console.log(data);
 
     return (
         <>
@@ -266,7 +266,8 @@ function Report() {
             </div>
         </div>
         {/* Recommender: top, bar chart */}
-        {data.topRecommender && (<div className="d-flex flex-row justify-content-around">
+        {data.topRecommender && data.topRecommender.count != null && 
+        (<div className="d-flex flex-row justify-content-around">
             <div className="p-3 m-3 grey-tile" onClick={(e) => {
                 setOrder([5, 'desc']); handleOpen();
               }}>
