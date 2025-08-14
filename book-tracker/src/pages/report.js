@@ -283,14 +283,14 @@ function Report() {
         {data.topAuthor && data.topAuthor.count != null && 
         (<div className="d-flex flex-row justify-content-around">
             <div className="p-3 m-3 grey-tile" onClick={(e) => {
-                setOrder([2, 'desc']); handleOpen();
+                setOrder([1, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">Top Author</h4>
                 <p className="text-center">{data.topAuthor.name}</p>
                 <p className="text-center">Total Books: {data.topAuthor.count}</p>
             </div>
             <div className="p-4 m-3 grey-tile w-50" onClick={(e) => {
-                setOrder([2, 'desc']); handleOpen();
+                setOrder([1, 'asc']); handleOpen();
               }}>
                 <ResponsiveContainer width="100%" height="100%">
                 <BarChart
