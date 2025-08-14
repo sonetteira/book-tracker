@@ -34,7 +34,6 @@ function YearBookTable({year, startOrder}) {
         { title: 'Recommender', data: 'recommender' },
         { title: 'Days', data: 'days' },
         { title: 'Pages per Day', data: 'pagesPerDay', render: data => !data ? '' : Math.round(data) }
-        // read time
     ]
 
     return (

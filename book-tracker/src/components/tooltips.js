@@ -33,8 +33,8 @@ const TitledTooltip = ({ active, payload, label }) => {
             <>
             <p className="label">Title: { payload[1].value }<br />
             { Math.round(payload[0].value) } pages per day<br />
-            Book Length: { payload[2].value } pages<br />
-            { payload[3].value!=null && (<>Reading Time: { payload[3].value } days</>)}
+            { payload[2] != undefined && (<>Book Length: { payload[2].value } pages<br /></>)}
+            { payload[3] != undefined && (<>Reading Time: { payload[3].value } days</>)}
             </p>
             </>
         )}

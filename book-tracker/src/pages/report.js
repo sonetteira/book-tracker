@@ -14,15 +14,16 @@ function Report() {
     const [ data, setData ] = useState({});
     const [ open, setOpen ] = useState(false);
     const [ order, setOrder ] = useState([0, 'asc']);
-
-    const handleClose = () => {
+    
+    // handle open close functions for modal
+    const handleClose = () => { 
         setOpen(false);
     };
-
     const handleOpen = () => {
         setOpen(true);
     };
 
+    // find min and max for a given property in a json array
     const findMaxMin = (array, prop) => {
         var max, min;
         array.forEach(el => {
@@ -38,6 +39,7 @@ function Report() {
         return new Date(date).toLocaleDateString('en-US', {timeZone: 'UTC'});
     }
 
+    // get yearly report for given year
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}/reports/yearly?year=${encodeURIComponent(year)}`)
             .then(res => res.json())
@@ -45,6 +47,7 @@ function Report() {
             .catch(err => console.error(err));
     }, [year]);
 
+    // set a data variable with formatted variables for display, charts
     useEffect(() => {
         if (!reportDetails) return;
         // data is a set of objects formatted for recharts
@@ -62,14 +65,6 @@ function Report() {
                     pgCount: reportDetails.shortest[0].minPages.pageCount
                 }
             ],
-            // map format breakdown for bar chart
-            formatBreakdown: (function () {
-                return reportDetails.formatBreakdown.map(o => ({name: o._id, count: o.count}));
-            }()),
-            // map genre breakdown for bar chart
-            genreBreakdown: (function () {
-                return reportDetails.genreBreakdown.map(o => ({name: o._id, count: o.count}));
-            }()),
             // choose top recommender (excluding blank string)
             topRecommender: (function () {
                 let target = 0;
@@ -89,10 +84,6 @@ function Report() {
                     name: reportDetails.recommenderBreakdown[target]._id,
                     count: reportDetails.recommenderBreakdown[target].count
                 }
-            }()),
-            // map recommender breakdown for bar chart. exclude blank recommenders
-            recommenderBreakdown: (function () {
-                return reportDetails.recommenderBreakdown.filter(o => o._id != "").map(o => ({name: o._id, count: o.count}));
             }()),
             // return quickest read
             quickestBook: (function () {
@@ -135,28 +126,27 @@ function Report() {
                     days: speedPoles.min.days,
                     pagesPerDay: speedPoles.min.pagesPerDay
                 }
-            }()),
-            // map reading speed over time for line chart
-            // readingSpeed: (function () {
-            //     return reportDetails.readingSpeed.map(o => ({name: o._id, count: o.count}));
-            // }()),
+            }())
         });
     }, [reportDetails])
 
+    // handle changes on year form
     const handleChange = (e) => {
         e.preventDefault();
         setYear(e.target.value);
     }
 
     if (!reportDetails) return <><YearForm handleChange={handleChange}/><div>Loading...</div></>
-    if (data) console.log(data);
+    // if (data) console.log(data);
 
     return (
         <>
+        {/* page controls */}
         <div className="d-flex flex-row justify-content-around">
             <YearForm handleChange={handleChange}/>
             <p><a href={`../year/${year}`} className="btn btn-secondary btn-lg active" role="button">See all {year} books</a></p>
         </div>
+        {/* Total Books and Total Pages gauges */}
         <div className="d-flex flex-row justify-content-around">
             <div className="p-2 m-3 grey-tile" onClick={(e) => {
                 setOrder([0, 'asc']); handleOpen();
@@ -187,6 +177,7 @@ function Report() {
                 />
             </div>
         </div>
+        {/* Longest/Shortest book tiles, bar graph */}
         <div className="d-flex flex-row justify-content-around">
             <div className="p-3 m-3 grey-tile" onClick={(e) => {
                 setOrder([2, 'desc']); handleOpen();
@@ -225,16 +216,16 @@ function Report() {
                 <p className="text-center">Pages: {reportDetails.shortest[0].minPages.pageCount.toLocaleString()}</p>
             </div>
         </div>
+        {/* bar graphs for format and genre breakdowns */}
         <div className="d-flex flex-row justify-content-around">
             <div className="p-2 m-3 grey-tile" onClick={(e) => {
                 setOrder([4, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">Formats</h4>
-                {/* <ResponsiveContainer width="100%" height="100%"> */}
                     <BarChart
                     width={400}
                     height={300}
-                    data={data.formatBreakdown}
+                    data={reportDetails.formatBreakdown}
                     margin={{
                         top: 5,
                         right: 30,
@@ -243,22 +234,20 @@ function Report() {
                     }}
                     >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" stroke="#84ceff" />
+                    <XAxis dataKey="_id" stroke="#84ceff" />
                     <YAxis stroke="#84ceff" />
                     <Tooltip content={SimpleTooltip} isAnimationActive={false} cursor={false} offset={-15} />
                     <Bar dataKey="count" fill="#82ca9d" activeBar={<Rectangle fill="gray" stroke="black" />} />
                     </BarChart>
-                {/* </ResponsiveContainer> */}
             </div>
             <div className="p-4 m-3 grey-tile" onClick={(e) => {
                 setOrder([3, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">Genres</h4>
-                {/* <ResponsiveContainer width="100%" height="100%"> */}
                 <BarChart
                 width={800}
                 height={300}
-                data={data.genreBreakdown}
+                data={reportDetails.genreBreakdown}
                 margin={{
                     top: 5,
                     right: 30,
@@ -267,14 +256,14 @@ function Report() {
                 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" stroke="#84ceff" />
+                    <XAxis dataKey="_id" stroke="#84ceff" />
                     <YAxis stroke="#84ceff" />
                     <Tooltip content={LabeledTooltip} isAnimationActive={false} cursor={false} offset={-15} />
                     <Bar dataKey="count" fill="#82ca9d" activeBar={<Rectangle fill="gray" stroke="black" />} />
                 </BarChart>
-                {/* </ResponsiveContainer> */}
             </div>
         </div>
+        {/* Recommender: top, bar chart */}
         {data.topRecommender && (<div className="d-flex flex-row justify-content-around">
             <div className="p-3 m-3 grey-tile" onClick={(e) => {
                 setOrder([5, 'desc']); handleOpen();
@@ -290,7 +279,7 @@ function Report() {
                 <BarChart
                 width={500}
                 height={300}
-                data={data.recommenderBreakdown}
+                data={reportDetails.recommenderBreakdown.filter(o => o._id != "")}
                 margin={{
                     top: 5,
                     right: 30,
@@ -299,7 +288,7 @@ function Report() {
                 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" stroke="#84ceff" />
+                    <XAxis dataKey="_id" stroke="#84ceff" />
                     <YAxis stroke="#84ceff" />
                     <Tooltip content={LabeledTooltip} isAnimationActive={false} cursor={false} offset={-15} />
                     <Bar dataKey="count" fill="#82ca9d" activeBar={<Rectangle fill="gray" stroke="black" />} />
@@ -307,6 +296,7 @@ function Report() {
                 </ResponsiveContainer>
             </div>
         </div>) }
+        {/* Total duration, speed tiles */}
         <div className="d-flex flex-row justify-content-around">
             {data.quickestBook && (<div className="p-3 m-3 grey-tile" onClick={(e) => {
                 setOrder([6, 'asc']); handleOpen();
@@ -335,9 +325,10 @@ function Report() {
                 <p className="text-center">Pages Per Day: {Math.round(data.slowest.pagesPerDay)}</p>
             </div>) }
         </div>
-        <div className="d-flex flex-row justify-content-around">
+        {/* Reading speed line graph */}
+        { reportDetails.readingSpeed.length > 0 && (<div className="d-flex flex-row justify-content-around">
             <div className="p-3 m-3 grey-tile" onClick={(e) => {
-                setOrder([7, 'desc']); handleOpen();
+                setOrder([0, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">Reading Speed</h4>
                 <LineChart width={730} height={250} data={reportDetails.readingSpeed}
@@ -353,7 +344,8 @@ function Report() {
                     <Line dataKey="days" hide={true} />
                 </LineChart>
             </div>
-        </div>
+        </div> )}
+        {/* modal book table with order customized by which chart was clicked */}
         <Modal isOpen={open} onClose={handleClose}>
             <YearBookTable year={year} startOrder={order} ></YearBookTable>
         </Modal>
