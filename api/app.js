@@ -14,7 +14,6 @@ mongoose.connect(process.env.MONGO_URL)
 }).catch((err) => {
     console.error(err);
 });
-var Book = require('./models/book'); // Path to the Book model
 
 var indexRouter = require('./routes/index');
 var yearsRouter = require('./routes/getYears');

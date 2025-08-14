@@ -5,7 +5,7 @@ import YearBookTable from '../components/bookTable';
 import { SimpleTooltip, LabeledTooltip, TitledTooltip } from '../components/tooltips'
 import GaugeChart from 'react-gauge-chart';
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-    LineChart, Legend, Line
+    LineChart, Line
  } from 'recharts';
 
 function Report() {
