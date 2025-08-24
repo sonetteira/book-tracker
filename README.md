@@ -14,6 +14,11 @@ node setup.js
 ```
 
 ## Run 
+
+Run full application with ./start.sh
+
+Stop wtih ./stop.sh
+
 ### API
 
 Run express API for interfacing with MongoDB and making external API calls. Defaults to run on port 3002
@@ -45,3 +50,8 @@ npx jest
 ## Documentation
 
 API index documents endpoints
+
+## Backup Database
+
+``` mongoexport --db books --collection books --out api/data/books.books.json ```
+or other output file
