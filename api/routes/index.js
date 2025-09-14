@@ -7,7 +7,8 @@ router.get('/', function(req, res, next) {
     endpoints: [
       { name: 'Get Finished Books', path: '/books', note:
         'Defaults to returning most recent 50 read books from the database. ' +
-        'Use query parameter toread=T to return books with want to read flag set.'
+        'Use query parameter toread=T to return books with want to read flag set. ' +
+        'Use query parameter progress=T to return books with a start date but no end date.'
       },
       { name: 'Get Books by Read year', path: '/yearBooks', note:
         'Use query parameter "year" to get a list of books finished in the given year.'
