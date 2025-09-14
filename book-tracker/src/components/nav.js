@@ -14,6 +14,7 @@ function Navigation() {
                 <Nav className="me-auto">
                     <Nav.Link href="/">Finished Books</Nav.Link>
                     <Nav.Link href="/toread">To Read</Nav.Link>
+                    <Nav.Link href="/inProgress">In Progress</Nav.Link>
                     <Nav.Link href="/addBook">Add Book</Nav.Link>
                     <NavDropdown title="Reports" id="basic-nav-dropdown">
                         <NavDropdown.Item href="/report/yearly">Yearly Report</NavDropdown.Item>

@@ -10,6 +10,7 @@ function BookTable() {
     const table = useRef(null);
     const urlParams = useParams();
     var toReadSet = urlParams.view && urlParams.view.toLocaleUpperCase() === 'TOREAD';
+    var inProgressSet = urlParams.view && urlParams.view.toLocaleUpperCase() === 'INPROGRESS';
     var yearSet = urlParams.view && urlParams.view.toLocaleUpperCase() === 'YEAR';
     var year = urlParams.year;
 
@@ -17,6 +18,8 @@ function BookTable() {
         // set the apiCall variable with the correct url based on the view params
         if(toReadSet)
             return 'books?toread=T';
+        else if(inProgressSet)
+            return 'books?progress=T'
         else if(yearSet)
             return `yearBooks?year=${year}`;
         else
@@ -28,7 +31,7 @@ function BookTable() {
             .then(res => res.json())
             .then(setApiResponse)
             .catch(err => console.error(err));
-    }, [yearSet, year, toReadSet]);
+    }, [yearSet, year, toReadSet, inProgressSet]);
 
     useEffect(() => {
         // handle enter key event on search bar
@@ -82,6 +85,17 @@ function BookTable() {
         },
     ];
 
+    const startedViewColumns = [ //columns included only if viewing in progress books
+        {
+            title: 'Date Started',
+            data: 'startDate',
+            render: data => {
+                if (!data) return '';
+                return new Date(data).toLocaleDateString('en-US', {timeZone: 'UTC'});
+            }
+        }
+    ];
+
     const allViewColumns = [ 
         //columns included in all views
         { title: 'Title', data: 'title' },
@@ -110,12 +124,16 @@ function BookTable() {
     ];
 
     // set columns based on view
-    const columns = toReadSet ? [...allViewColumns, ...seeMoreColumns] : [...allViewColumns, ...finishedViewColumns, ...seeMoreColumns]
+    const columns = toReadSet ? [...allViewColumns, ...seeMoreColumns] : 
+        inProgressSet ? [...allViewColumns, ...startedViewColumns, ...seeMoreColumns] :
+        [...allViewColumns, ...finishedViewColumns, ...seeMoreColumns];
+
+    const titleText = toReadSet ? 'Books To Read' : inProgressSet ? 'Books In Progress' : 'Finished Books';
 
     return (
         <div>
-            <title>{toReadSet ? 'Books To Read' : 'Finished Books'}</title>
-            <h2>{toReadSet ? 'Books To Read' : 'Finished Books'}</h2>
+            <title>{titleText}</title>
+            <h2>{titleText}</h2>
             <button className="btn btn-secondary mb-3 float-end" onClick={customSearch}>Search All</button>
             <DataTable
                 data={apiResponse && apiResponse.length > 0 ? apiResponse : []}
