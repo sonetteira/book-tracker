@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Book = require('../models/book');
+var Reread = require('../models/reread')
 
 router.get('/', async (req, res) => {
     // get id from query parameters
@@ -9,8 +10,8 @@ router.get('/', async (req, res) => {
         return res.status(400).json({ message: 'Query parameter "bookID" is required.' });
     }
     try {
-        // Fetch all books from the database
-        const book = await Book.findById(bookID);
+        // Fetch this book from the database
+        const book = await Book.findById(bookID).populate('rereads');
         res.json(book); // Respond with the book details as JSON
     } catch (err) {
         console.error('Error fetching book:', err);

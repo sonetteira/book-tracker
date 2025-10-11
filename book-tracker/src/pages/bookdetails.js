@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import 'react-bootstrap';
+import Reread from '../components/rereads';
 
 function BookDetail() {
     const { id: bookID } = useParams();
@@ -33,6 +34,8 @@ function BookDetail() {
             <p><strong>Date Finished:</strong> {book.endDate && new Date(book.endDate).toLocaleDateString('en-US', {timeZone: 'UTC'})}</p>
             {book.summary && <p><strong>Summary:</strong><br /> {book.summary}</p>}
             {book.reaction && <p><strong>Reaction:</strong><br /> {book.reaction}</p>}
+            {book.rereads.length > 0 && <><h3>Rereads</h3><br />
+            {book.rereads.map(item => <Reread rr={item}></Reread>)}</>}
             </>}
             <br />
             <p><a href={`/editBook/${bookID}`} className='btn btn-primary'>Edit Book</a></p>

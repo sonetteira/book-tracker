@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const Book = require('./models/book');
-const Reread = require('./models/reread');
+const Book = require('../models/book');
+const Reread = require('../models/reread');
 const dotenv = require('dotenv');
 dotenv.config();
 

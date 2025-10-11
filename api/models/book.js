@@ -15,7 +15,11 @@ const bookSchema = new mongoose.Schema({
   startDate: { type: Date },
   endDate: { type: Date },
   summary: { type: String },
-  reaction: { type: String }
+  reaction: { type: String },
+  rereads: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Reread'
+  }],
 });
 
 module.exports = mongoose.model('Book', bookSchema);
