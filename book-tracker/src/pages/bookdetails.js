@@ -17,29 +17,33 @@ function BookDetail() {
     if (!book) return <div>Loading...</div>;
 
     return (
-        <div>
-            <title>Book Details</title>
-            <h2>{book.title}</h2>
-            {book.subtitle && <p><strong>Subtitle:</strong> {book.subtitle}</p>}
-            <p><strong>Author:</strong> {book.author}</p>
-            {book.format && <p><strong>Format:</strong> {book.format}</p>}
-            {book.genre && <p><strong>Genre:</strong> {book.genre}</p>}
-            {book.pageCount && <p><strong>Page Count:</strong> {book.pageCount}</p>}
-            {book.yearPublished && <p><strong>Year Published:</strong> {book.yearPublished}</p>}
-            {book.recommender && <p><strong>Recommender:</strong> {book.recommender}</p>}
-            { book.wantToRead && <p>Want To Read</p>}
-            { !book.wantToRead && // only display if wantToRead is false
-            <>
-            <p><strong>Start Date:</strong> {book.startDate && new Date(book.startDate).toLocaleDateString('en-US', {timeZone: 'UTC'})}</p>
-            <p><strong>Date Finished:</strong> {book.endDate && new Date(book.endDate).toLocaleDateString('en-US', {timeZone: 'UTC'})}</p>
-            {book.summary && <p><strong>Summary:</strong><br /> {book.summary}</p>}
-            {book.reaction && <p><strong>Reaction:</strong><br /> {book.reaction}</p>}
-            {book.rereads.length > 0 && <><h3>Rereads</h3><br />
-            {book.rereads.map(item => <Reread rr={item}></Reread>)}</>}
-            </>}
-            <br />
-            <p><a href={`/editBook/${bookID}`} className='btn btn-primary'>Edit Book</a></p>
-            <p><button onClick={() => window.history.back()} className="btn btn-secondary">Back</button></p>
+        <div className="d-flex flex-row justify-content-around">
+            <div>
+                <title>Book Details</title>
+                <h2>{book.title}</h2>
+                {book.subtitle && <p><strong>Subtitle:</strong> {book.subtitle}</p>}
+                <p><strong>Author:</strong> {book.author}</p>
+                {book.format && <p><strong>Format:</strong> {book.format}</p>}
+                {book.genre && <p><strong>Genre:</strong> {book.genre}</p>}
+                {book.pageCount && <p><strong>Page Count:</strong> {book.pageCount}</p>}
+                {book.yearPublished && <p><strong>Year Published:</strong> {book.yearPublished}</p>}
+                {book.recommender && <p><strong>Recommender:</strong> {book.recommender}</p>}
+                { book.wantToRead && <p>Want To Read</p>}
+                { !book.wantToRead && // only display if wantToRead is false
+                <>
+                <p><strong>Start Date:</strong> {book.startDate && new Date(book.startDate).toLocaleDateString('en-US', {timeZone: 'UTC'})}</p>
+                <p><strong>Date Finished:</strong> {book.endDate && new Date(book.endDate).toLocaleDateString('en-US', {timeZone: 'UTC'})}</p>
+                {book.summary && <p><strong>Summary:</strong><br /> {book.summary}</p>}
+                {book.reaction && <p><strong>Reaction:</strong><br /> {book.reaction}</p>}
+                </>}
+                <br />
+                <p><a href={`/editBook/${bookID}`} className='btn btn-primary'>Edit Book</a></p>
+                <p><button onClick={() => window.history.back()} className="btn btn-secondary">Back</button></p>
+            </div>
+            <div>
+                {book.rereads.length > 0 && <><h3>Rereads</h3><br />
+                {book.rereads.map(item => <Reread rr={item}></Reread>)}</>}
+            </div>
         </div>
     );
 }
