@@ -23,6 +23,7 @@ var searchBookRouter = require('./routes/searchExternalBooks');
 var addBookRouter = require('./routes/addBook');
 var searchMyBooksRouter = require('./routes/searchBooks');
 var updateBookRouter = require('./routes/updateBook');
+var updateRereadRouter = require('./routes/updateReread');
 var yearlyBookRouter = require('./routes/yearlyBooks');
 
 // reports
@@ -50,6 +51,7 @@ app.use('/searchBooks', searchBookRouter);
 app.use('/addBook', addBookRouter);
 app.use('/searchMyBooks', searchMyBooksRouter);
 app.use('/updateBook', updateBookRouter);
+app.use('/updateReread', updateRereadRouter);
 app.use('/yearBooks', yearlyBookRouter);
 
 // reports
