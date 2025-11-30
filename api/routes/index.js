@@ -20,10 +20,6 @@ router.get('/', function(req, res, next) {
         'Searches MongoDB for books for a search query based on title, subtitle, author. ' +
         'Use query parameter "searchTerm" to enter a search query.'
       },
-      { name: 'Search External Books', path: '/searchBooks', note: 
-        'Searches Open Library API for books. ' +
-        'Use query parameter "q" to enter a search query.'
-      },
       { name: 'Add Book', path: '/addBook', note: 
         'Use POST request to add a book to the MongoDB.'
       },
@@ -37,11 +33,19 @@ router.get('/', function(req, res, next) {
       },
       {
         name: 'Update Reread', path: '/updateReread', note:
-        'Use POST request to update a reread document in the MongoDB using its ID.'
+        'Use POST request to update a book reread in the MongoDB using its ID.'
+      },
+      {
+        name: 'Delete Reread', path: '/deleteReread', note:
+        'Use POST request to delete a book reread record from the MongoDB using its ID.'
       },
       {
         name: 'Get Years', path: 'getYears', note:
         'Returns an array of all years for which book records are kept.'
+      },
+      { name: 'Search External Books', path: '/searchBooks', note: 
+        'Searches Open Library API for books. ' +
+        'Use query parameter "q" to enter a search query.'
       },
       {
         name: 'Report - Yearly', path: 'reports/yearly', note:

@@ -16,16 +16,17 @@ mongoose.connect(process.env.MONGO_URL)
 });
 
 var indexRouter = require('./routes/index');
+var searchBookRouter = require('./routes/searchExternalBooks');
 var yearsRouter = require('./routes/getYears');
 var booksRouter = require('./routes/allBooks');
-var getBookRouter = require('./routes/getBook');
-var searchBookRouter = require('./routes/searchExternalBooks');
-var addBookRouter = require('./routes/addBook');
-var addRereadRouter = require('./routes/addReread');
-var searchMyBooksRouter = require('./routes/searchBooks');
-var updateBookRouter = require('./routes/updateBook');
-var updateRereadRouter = require('./routes/updateReread');
 var yearlyBookRouter = require('./routes/yearlyBooks');
+var getBookRouter = require('./routes/getBook');
+var searchMyBooksRouter = require('./routes/searchBooks');
+var addBookRouter = require('./routes/addBook');
+var updateBookRouter = require('./routes/updateBook');
+var addRereadRouter = require('./routes/addReread');
+var updateRereadRouter = require('./routes/updateReread');
+var deleteRereadRouter = require('./routes/deleteReread');
 
 // reports
 var yearlyReportRouter = require('./routes/yearlyReport');
@@ -46,15 +47,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/getYears', yearsRouter);
-app.use('/books', booksRouter);
-app.use('/getBook', getBookRouter);
 app.use('/searchBooks', searchBookRouter);
-app.use('/addBook', addBookRouter);
-app.use('/addReread', addRereadRouter);
-app.use('/searchMyBooks', searchMyBooksRouter);
-app.use('/updateBook', updateBookRouter);
-app.use('/updateReread', updateRereadRouter);
+app.use('/books', booksRouter);
 app.use('/yearBooks', yearlyBookRouter);
+app.use('/getBook', getBookRouter);
+app.use('/searchMyBooks', searchMyBooksRouter);
+app.use('/addBook', addBookRouter);
+app.use('/updateBook', updateBookRouter);
+app.use('/addReread', addRereadRouter);
+app.use('/updateReread', updateRereadRouter);
+app.use('/deleteReread', deleteRereadRouter);
+
 
 // reports
 app.use('/reports/yearly', yearlyReportRouter);
