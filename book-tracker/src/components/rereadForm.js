@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-function RereadForm({ rereadObject, handleSubmit, submitText }) {
+function RereadForm({ rereadObject, handleSubmit, handleCancel, handleDelete, submitText }) {
     const {register, watch} = useForm();
 
     const processDate = (date) => {
@@ -33,7 +33,8 @@ function RereadForm({ rereadObject, handleSubmit, submitText }) {
             </Form.Group>
 
             <Button variant="primary" type="submit">{submitText}</Button>
-            <Button variant="secondary" type="button" className="ms-2" onClick={() => window.history.back()}>Cancel</Button>
+            <Button variant="secondary" type="button" className="ms-2" onClick={handleCancel}>Cancel</Button>
+            {handleDelete && <Button variant="danger" type="button" className="ms-2" onClick={handleDelete}>Delete</Button>}
         </Form>
     );
 
