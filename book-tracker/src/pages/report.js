@@ -160,14 +160,14 @@ function Report() {
         {/* page controls */}
         <div className="d-flex flex-row justify-content-around">
             <YearForm handleChange={handleChange}/>
-            <p><a href={`../year/${year}`} className="btn btn-secondary btn-lg active" role="button">See all {year} books</a></p>
+            <p><a href={`../year/${year}`} className="btn btn-secondary btn-lg active" role="button">See new {year} books</a></p>
         </div>
         {/* Total Books and Total Pages gauges */}
         <div className="d-flex flex-row justify-content-around">
-            <div className="p-2 m-3 grey-tile" onClick={(e) => {
+            <div className="p-2 m-2 grey-tile" onClick={(e) => {
                 setOrder([0, 'asc']); handleOpen();
               }}>
-                <h4 className="text-center">Total Books Read</h4>
+                <h4 className="text-center">New Books Read</h4>
                 <p className="text-center">{reportDetails && reportDetails.bookCount.toLocaleString()}</p>
                 {/* max books set to 80 */}
                 <GaugeChart id="gauge-chart2" 
@@ -178,10 +178,10 @@ function Report() {
                     needleColor="#cacaca"
                 />
             </div>
-            <div className="p-2 m-3 grey-tile" onClick={(e) => {
+            <div className="p-2 m-2 grey-tile" onClick={(e) => {
                 setOrder([2, 'asc']); handleOpen();
               }}>
-                <h4 className="text-center">Total Page Count</h4>
+                <h4 className="text-center">New Books Page Count</h4>
                 <p className="text-center">{reportDetails && reportDetails.pageCount[0].totalPageCount.toLocaleString()}</p>
                 {/* max pages set to 20,000 */}
                 <GaugeChart id="gauge-chart2" 
@@ -191,6 +191,34 @@ function Report() {
                     hideText={true}
                     needleColor="#cacaca"
                 />
+            </div>
+            <div className="p-2 m-2 grey-tile">
+                <h4 className="text-center">Total Books Read</h4>
+                <p className="text-center">{reportDetails && (reportDetails.bookCount + reportDetails.rereadCount).toLocaleString()}</p>
+                {/* max books set to 80 */}
+                <GaugeChart id="gauge-chart2" 
+                    colors={["#FF5F6D", "#515affff"]} 
+                    nrOfLevels={4} 
+                    percent={(reportDetails.bookCount + reportDetails.rereadCount) / 80}
+                    hideText={true}
+                    needleColor="#cacaca"
+                />
+                <p className="text-center">Rereads: {reportDetails.rereadCount.toLocaleString()}</p>
+            </div>
+            <div className="p-2 m-2 grey-tile">
+                <h4 className="text-center">Total Page Count</h4>
+                <p className="text-center">{reportDetails && (reportDetails.pageCount[0].totalPageCount + 
+                    reportDetails.rereadPageCount[0].totalPageCount).toLocaleString()}</p>
+                {/* max pages set to 20,000 */}
+                <GaugeChart id="gauge-chart2" 
+                    colors={["#ffd25fff", "#51ff60ff"]} 
+                    nrOfLevels={4} 
+                    percent={(reportDetails.pageCount[0].totalPageCount + 
+                        reportDetails.rereadPageCount[0].totalPageCount) / 20000}
+                    hideText={true}
+                    needleColor="#cacaca"
+                />
+                <p className="text-center">Rereads: {reportDetails.rereadPageCount[0].totalPageCount.toLocaleString()}</p>
             </div>
         </div>
         {/* Longest/Shortest book tiles, bar graph */}
