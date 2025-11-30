@@ -14,7 +14,6 @@ function BookDetail() {
     const [showForm, setShowForm] = useState(true);
     const [showMsg, setShowMsg] = useState(false);
     const [resetBook, setResetBook] = useState(false);
-    const rereadIndexRef = useRef(null);
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}/getBook?bookID=${encodeURIComponent(bookID)}`)
@@ -36,11 +35,8 @@ function BookDetail() {
         setOpen(true);
     };
     // handler for edit reread buttons
-    const editRRHandler = (e) => {
-        e.preventDefault();
-        // console.log(e.target.index.value);
-        console.log(rereadIndexRef.current.value);
-        setReread(book.rereads[rereadIndexRef.current.value]);
+    const editRRHandler = (i) => {
+        setReread(book.rereads[i]);
         setOpen(true);
         setResetBook(false);
     };
@@ -103,7 +99,7 @@ function BookDetail() {
             </div>
             <div>
                 {book.rereads.length > 0 && <><h3>Rereads</h3><br />
-                {book.rereads.map((item, index) => <Reread i={index} rr={item} editHandler={editRRHandler} ref={rereadIndexRef}></Reread>)}</>}
+                {book.rereads.map((item, index) => <Reread i={index} rr={item} editHandler={editRRHandler}></Reread>)}</>}
             </div>
         </div>
         {/* modal edit/add reread form */}
