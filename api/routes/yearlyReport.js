@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Book = require('../models/book');
+var Reread = require('../models/reread');
 
 router.get('/', async (req, res) => {
     // get year from query parameters
@@ -11,11 +12,49 @@ router.get('/', async (req, res) => {
     // build a json response of aggregate data
     try {
         let report = {};
-        // get the number of books finished during the year
+        // get the number of new books finished during the year
         report.bookCount = await Book.countDocuments({endDate: {
             $gte: new Date(`${year}-01-01T00:00:00.000Z`),
             $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
         }});
+        // get the number reread books finished during the year
+        report.rereadCount = await Reread.countDocuments({endDate: {
+            $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+            $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
+        }});
+        // pages read
+        report.pageCount = await Book.aggregate([
+            { $match: { endDate: {
+                $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
+            }}},
+            { $group: {
+                _id: null,
+                totalPageCount: { $sum: '$pageCount' }
+            }},
+            { $project: { _id: 0, totalPageCount: 1 }}
+        ]);
+        // reread pages read
+        report.rereadPageCount = await Reread.aggregate([
+            { $match: { endDate: {
+                $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
+            }}},
+            { $lookup: {
+                from: 'books',
+                localField: 'book',
+                foreignField: '_id',
+                as: 'lookup'
+            }},
+            { $addFields: {
+                pageCount: { $sum: '$lookup.pageCount' }
+            }},
+            { $group: {
+                _id: null,
+                totalPageCount: { $sum: '$pageCount' }
+            }},
+            { $project: { _id: 0, totalPageCount: 1 }}
+        ])
         // breakdown by format
         report.formatBreakdown = await Book.aggregate( [
             { $match: { endDate: {
@@ -33,18 +72,6 @@ router.get('/', async (req, res) => {
             }}},
             { $sortByCount: '$genre' },
             { $sort: {count: -1} }
-        ]);
-        // pages read
-        report.pageCount = await Book.aggregate([
-            { $match: { endDate: {
-                $gte: new Date(`${year}-01-01T00:00:00.000Z`),
-                $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
-            }}},
-            { $group: {
-                _id: null,
-                totalPageCount: { $sum: '$pageCount' }
-            }},
-            { $project: { _id: 0, totalPageCount: 1 }}
         ]);
         // longest book
         report.longest = await Book.aggregate([
