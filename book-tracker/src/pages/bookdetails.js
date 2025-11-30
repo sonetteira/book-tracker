@@ -10,8 +10,8 @@ function BookDetail() {
     const emptyReread = { bookID: '', startDate: '', endDate: '', reaction:''};
     const [book, setBook] = useState(null);
     const [open, setOpen] = useState(false);
-    const [rereadObject, setReread] = useState(emptyReread);
-    // const [rereadObject, setReread] = useState(null);
+    // const [rereadObject, setReread] = useState(emptyReread);
+    const [rereadObject, setReread] = useState(null);
     const [newRR, setNewRR] = useState(false);
     const [submitResponse, setSubmitResponse] = useState(null);
     const [showForm, setShowForm] = useState(true);
@@ -40,6 +40,7 @@ function BookDetail() {
     // handler for edit reread buttons
     const editRRHandler = (i) => {
         setReread(book.rereads[i]);
+        setNewRR(false);
         setOpen(true);
         setResetBook(false);
     };
@@ -147,7 +148,7 @@ function BookDetail() {
         { 
         // add reread
         newRR && 
-            <RereadForm rereadObject={rereadObject} handleSubmit={handleNewRereadSubmit} submitText={'Add Reread'}></RereadForm> }
+            <RereadForm rereadObject={emptyReread} handleSubmit={handleNewRereadSubmit} submitText={'Add Reread'}></RereadForm> }
         </>
         }
         </Modal>
