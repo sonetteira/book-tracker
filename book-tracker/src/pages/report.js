@@ -153,7 +153,7 @@ function Report() {
     }
 
     if (!reportDetails) return <><YearForm handleChange={handleChange}/><div>Loading...</div></>
-    if (data) console.log(data);
+    // if (data) console.log(data);
 
     return (
         <>
