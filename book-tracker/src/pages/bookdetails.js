@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import 'react-bootstrap';
 import Reread from '../components/rereads';
@@ -12,16 +12,21 @@ function BookDetail() {
     const [rereadObject, setReread] = useState(null);
     const [submitResponse, setSubmitResponse] = useState(null);
     const [showForm, setShowForm] = useState(true);
+    const [showMsg, setShowMsg] = useState(false);
+    const [resetBook, setResetBook] = useState(false);
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}/getBook?bookID=${encodeURIComponent(bookID)}`)
             .then(res => res.json())
             .then(setBook)
             .catch(err => console.error(err));
-    }, [bookID]);
+    }, [bookID, resetBook]);
 
     // handle open close functions for modal
     const handleClose = () => { 
+        setSubmitResponse(null);
+        setShowForm(true);
+        setShowMsg(false);
         setOpen(false);
     };
     const handleOpen = () => {
@@ -33,6 +38,7 @@ function BookDetail() {
         console.log(e.target.index.value);
         setReread(book.rereads[e.target.index.value])
         setOpen(true);
+        setResetBook(false);
     };
 
     const handleEditRereadSubmit = (e) => {
@@ -48,18 +54,23 @@ function BookDetail() {
                 endDate: e.target.formEndDate.value.trim(),
                 reaction: e.target.formReaction.value.trim()
             })
-        })//.then(handleResponse)
+        })
         .then(() => {
-            // hide the book form after submission
+            // hide the reread form after submission, print a message
+            setSubmitResponse( {ok: true, message: 'Reread edited successfully'});
             setShowForm(false);
+            setShowMsg(true);
+            setOpen(true);
+            // reset form and reload book obj
             e.target.reset();
-            setBook(null);
-            window.scrollTo(0, 0);
+            setResetBook(true);
         })
         .catch(err => {
             console.error('Error updating book:', err);
             setSubmitResponse({ ok: false, message: 'Error updating book. Please try again later.' });
-            window.scrollTo(0, 0);
+            setShowForm(false);
+            setShowMsg(true);
+            setOpen(true);
         });
     }
 
@@ -107,7 +118,8 @@ function BookDetail() {
         </div>
         {/* modal edit/add reread form */}
         <Modal isOpen={open} onClose={handleClose}>
-            { showForm && 
+        { showMsg && <p>{submitResponse.message}</p>}
+        { showForm && 
             <RereadForm rereadObject={rereadObject} handleSubmit={handleEditRereadSubmit} submitText={'Edit Reread'}></RereadForm>}
         </Modal>
         </>
