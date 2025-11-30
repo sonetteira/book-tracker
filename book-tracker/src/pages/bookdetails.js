@@ -7,9 +7,12 @@ import Modal from '../components/modal';
 
 function BookDetail() {
     const { id: bookID } = useParams();
+    const emptyReread = { bookID: '', startDate: '', endDate: '', reaction:''};
     const [book, setBook] = useState(null);
     const [open, setOpen] = useState(false);
-    const [rereadObject, setReread] = useState(null);
+    const [rereadObject, setReread] = useState(emptyReread);
+    // const [rereadObject, setReread] = useState(null);
+    const [newRR, setNewRR] = useState(false);
     const [submitResponse, setSubmitResponse] = useState(null);
     const [showForm, setShowForm] = useState(true);
     const [showMsg, setShowMsg] = useState(false);
@@ -70,6 +73,34 @@ function BookDetail() {
         });
     }
 
+    const handleNewRereadSubmit = (e) => {
+        e.preventDefault();
+        fetch(`${process.env.REACT_APP_API_URL}/addReread`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                bookID: book._id,
+                startDate: e.target.formStartDate.value.trim(),
+                endDate: e.target.formEndDate.value.trim(),
+                reaction: e.target.formReaction.value.trim()
+            })
+        })
+        .then(() => {
+            setSubmitResponse( {ok: true, message: 'Reread added successfully'});
+            handleOpen(false, true);
+            // reset form and reload book obj
+            e.target.reset();
+            setResetBook(true);
+        })
+        .catch(err => {
+            console.error('Error adding book:', err);
+            setSubmitResponse({ ok: false, message: 'Error adding book. Please try again later.' });
+            handleOpen(false, true);
+        });
+    }
+
     if (!book) return <div>Loading...</div>;
 
     return (
@@ -100,13 +131,25 @@ function BookDetail() {
             <div>
                 {book.rereads.length > 0 && <><h3>Rereads</h3><br />
                 {book.rereads.map((item, index) => <Reread i={index} rr={item} editHandler={editRRHandler}></Reread>)}</>}
+                <br/><button className='btn btn-outline-primary btn-sm' onClick={() => {setNewRR(true); handleOpen(true, false)}}>Add Reread</button>
             </div>
         </div>
         {/* modal edit/add reread form */}
         <Modal isOpen={open} onClose={handleClose}>
         { showMsg && <p>{submitResponse.message}</p>}
         { showForm && 
-            <RereadForm rereadObject={rereadObject} handleSubmit={handleEditRereadSubmit} submitText={'Edit Reread'}></RereadForm>}
+        <>
+        { 
+        // edit reread
+        !newRR && 
+            <RereadForm rereadObject={rereadObject} handleSubmit={handleEditRereadSubmit} submitText={'Edit Reread'}></RereadForm> 
+        }
+        { 
+        // add reread
+        newRR && 
+            <RereadForm rereadObject={rereadObject} handleSubmit={handleNewRereadSubmit} submitText={'Add Reread'}></RereadForm> }
+        </>
+        }
         </Modal>
         </>
     );
