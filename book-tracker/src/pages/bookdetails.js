@@ -29,7 +29,9 @@ function BookDetail() {
         setShowMsg(false);
         setOpen(false);
     };
-    const handleOpen = () => {
+    const handleOpen = (form, msg) => {
+        setShowForm(form);
+        setShowMsg(msg);
         setOpen(true);
     };
     // handler for edit reread buttons
@@ -58,31 +60,17 @@ function BookDetail() {
         .then(() => {
             // hide the reread form after submission, print a message
             setSubmitResponse( {ok: true, message: 'Reread edited successfully'});
-            setShowForm(false);
-            setShowMsg(true);
-            setOpen(true);
+            handleOpen(false, true);
             // reset form and reload book obj
             e.target.reset();
             setResetBook(true);
         })
         .catch(err => {
-            console.error('Error updating book:', err);
-            setSubmitResponse({ ok: false, message: 'Error updating book. Please try again later.' });
-            setShowForm(false);
-            setShowMsg(true);
-            setOpen(true);
+            console.error('Error updating reread:', err);
+            setSubmitResponse({ ok: false, message: 'Error updating reread. Please try again later.' });
+            handleOpen(false, true);
         });
     }
-
-    // const handleResponse = async (response) => {
-    //     if (response.ok) {
-    //         const data = await response.json();
-    //         data.ok = response.ok;
-    //         setSubmitResponse(data);
-    //     } else {
-    //         console.error('Error editing reread:', response.statusText);
-    //     }
-    // }
 
     if (!book) return <div>Loading...</div>;
 

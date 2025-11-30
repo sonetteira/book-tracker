@@ -14,11 +14,6 @@ function RereadForm({ rereadObject, handleSubmit, submitText }) {
 
     return (
         <Form onSubmit={handleSubmit} className="mt-3">    
-            {/* <Form.Group className="mb-3" controlId="formTitle">
-                <Form.Label>Title</Form.Label>
-                <Form.Control type="Text" placeholder="Title" readOnly defaultValue={ rereadObject.book } />
-            </Form.Group> */}
-
             <Form.Group className="mb-3" controlId="formStartDate">
                 <Form.Label>Date Started</Form.Label>
                 <Form.Control type="date" defaultValue={processDate(rereadObject.startDate)}
