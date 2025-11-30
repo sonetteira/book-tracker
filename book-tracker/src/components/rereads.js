@@ -1,12 +1,17 @@
-// object for displaying rereads
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
-function Reread({ i, rr, clickHandler }) {
+// object for displaying rereads
+function Reread({ i, rr, editHandler }) {
     return (
         <>
         <p><strong>Start Date:</strong> {rr.startDate && new Date(rr.startDate).toLocaleDateString('en-US', {timeZone: 'UTC'})}</p>
         <p><strong>Date Finished:</strong> {rr.endDate && new Date(rr.endDate).toLocaleDateString('en-US', {timeZone: 'UTC'})}</p>
         {rr.reaction && <p><strong>Reaction:</strong> {rr.reaction}</p>}
-        <button id={i} className='btn btn-outline-primary btn-sm' onClick={clickHandler}>Edit Reread</button>
+        <Form onSubmit={editHandler}>
+            <Form.Control type='hidden' name='index' defaultValue={i}></Form.Control>
+            <button className='btn btn-outline-primary btn-sm' type="submit">Edit Reread</button>
+        </Form>
         </>
     );
 }

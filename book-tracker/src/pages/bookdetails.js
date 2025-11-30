@@ -28,10 +28,10 @@ function BookDetail() {
         setOpen(true);
     };
     // handler for edit reread buttons
-    const clickHandler = (e) => {
-        e.persist();
-        console.log(e.target.id);
-        setReread(book.rereads[e.target.id])
+    const editRRHandler = (e) => {
+        e.preventDefault();
+        console.log(e.target.index.value);
+        setReread(book.rereads[e.target.index.value])
         setOpen(true);
     };
 
@@ -102,7 +102,7 @@ function BookDetail() {
             </div>
             <div>
                 {book.rereads.length > 0 && <><h3>Rereads</h3><br />
-                {book.rereads.map((item, index) => <Reread i={index} rr={item} clickHandler={clickHandler}></Reread>)}</>}
+                {book.rereads.map((item, index) => <Reread i={index} rr={item} editHandler={editRRHandler}></Reread>)}</>}
             </div>
         </div>
         {/* modal edit/add reread form */}
