@@ -5,7 +5,7 @@ import DT from 'datatables.net-bs5';
 DataTable.use(DT);
 
 function YearBookTable({year, startOrder}) {
-    console.log(startOrder);
+    // console.log(startOrder);
     const [apiResponse, setApiResponse] = useState([]);
 
     useEffect(() => {
