@@ -14,6 +14,7 @@ function BookDetail() {
     const [showForm, setShowForm] = useState(true);
     const [showMsg, setShowMsg] = useState(false);
     const [resetBook, setResetBook] = useState(false);
+    const rereadIndexRef = useRef(null);
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}/getBook?bookID=${encodeURIComponent(bookID)}`)
@@ -37,8 +38,9 @@ function BookDetail() {
     // handler for edit reread buttons
     const editRRHandler = (e) => {
         e.preventDefault();
-        console.log(e.target.index.value);
-        setReread(book.rereads[e.target.index.value])
+        // console.log(e.target.index.value);
+        console.log(rereadIndexRef.current.value);
+        setReread(book.rereads[rereadIndexRef.current.value]);
         setOpen(true);
         setResetBook(false);
     };
@@ -76,10 +78,10 @@ function BookDetail() {
 
     return (
         <>
+        <title>Book Details</title>
+        <h2>{book.title}</h2>
         <div className="d-flex flex-row justify-content-around">
             <div>
-                <title>Book Details</title>
-                <h2>{book.title}</h2>
                 {book.subtitle && <p><strong>Subtitle:</strong> {book.subtitle}</p>}
                 <p><strong>Author:</strong> {book.author}</p>
                 {book.format && <p><strong>Format:</strong> {book.format}</p>}
@@ -101,7 +103,7 @@ function BookDetail() {
             </div>
             <div>
                 {book.rereads.length > 0 && <><h3>Rereads</h3><br />
-                {book.rereads.map((item, index) => <Reread i={index} rr={item} editHandler={editRRHandler}></Reread>)}</>}
+                {book.rereads.map((item, index) => <Reread i={index} rr={item} editHandler={editRRHandler} ref={rereadIndexRef}></Reread>)}</>}
             </div>
         </div>
         {/* modal edit/add reread form */}
