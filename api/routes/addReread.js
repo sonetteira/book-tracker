@@ -11,7 +11,7 @@ router.post('/', async (req, res) => {
         const book = await Book.findById(bookID);
         // Create a new reread instance
         const newReread = new Reread({
-            bookID,
+            book,
             startDate,
             endDate,
             reaction
