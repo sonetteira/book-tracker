@@ -10,6 +10,7 @@ import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Respons
 
 function Report() {
     const [ reportDetails, setReportDetails ] = useState(null);
+    const [years, setYears] = useState([]);
     const [ year, setYear ] = useState(new Date().getFullYear());
     const [ data, setData ] = useState({});
     const [ open, setOpen ] = useState(false);
@@ -66,6 +67,17 @@ function Report() {
     const dateFormatter = (date) => {
         return new Date(date).toLocaleDateString('en-US', {timeZone: 'UTC'});
     }
+
+    // get all available years
+    // set year to the most recent available
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_API_URL}/getYears`)
+            .then(res => res.json())
+            .then((years) => {
+                years.length > 0 && setYear(years[0]._id);
+            })
+            .catch(err => console.error(err));
+    },[]);
 
     // get yearly report for given year
     useEffect(() => {
@@ -158,7 +170,7 @@ function Report() {
     }
 
     if (!reportDetails) return <><YearForm handleChange={handleChange}/><div>Loading...</div></>
-    if (data) console.log(data.pageCount);
+    // if (data) console.log(data.pageCount);
 
     return (
         <>
