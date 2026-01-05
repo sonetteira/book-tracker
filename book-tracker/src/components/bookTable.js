@@ -46,6 +46,7 @@ function YearBookTable({year, startOrder, rereads = false}) {
 
     return (
         <div>
+            <h3>{rereads ? "Reread Books" : "New Books"}</h3>
             <DataTable
                 data={apiResponse && apiResponse.length > 0 ? apiResponse : []}
                 columns={columns}
