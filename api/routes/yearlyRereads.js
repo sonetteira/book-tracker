@@ -20,6 +20,10 @@ router.get('/', async (req, res) => {
                 from: 'books',
                 localField: 'book',
                 foreignField: '_id',
+                pipeline: [
+                    {$project: {startDate:0, endDate: 0, reaction: 0, 
+                        rereads: 0, wantToRead: 0}}
+                ],
                 as: 'book'
             }},
             { $addFields: {
@@ -29,6 +33,10 @@ router.get('/', async (req, res) => {
                 pagesPerDay: { $divide: ['$pageCount', '$days'] }
             }},
             { $sort: {endDate: 1}},
+            { $replaceRoot: { newRoot: 
+                { $mergeObjects: [ { $arrayElemAt: [ "$book", 0 ] }, "$$ROOT" ] } 
+            }},
+            { $project: { book: 0 }}
         ]);
         res.json(books); // Respond with the list of books as JSON
     } catch (err) {
