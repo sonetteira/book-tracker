@@ -82,15 +82,20 @@ function Report() {
         var poles = findMaxMin(reportDetails.readingSpeed, 'days');
         var speedPoles = findMaxMin(reportDetails.readingSpeed, 'pagesPerDay');
         setData({
+            // total page count, new and reread books
+            pageCount: {
+                'newBooks': reportDetails.pageCount.length > 0 ? reportDetails.pageCount[0].totalPageCount : 0,
+                'rereadBooks': reportDetails.rereadPageCount.length > 0 ?reportDetails.rereadPageCount[0].totalPageCount : 0
+            },
             // longest and shortest books for bar chart
             longestShortest: [
                 {
                     name: 'longest',
-                    pgCount: reportDetails.longest[0].maxPages.pageCount
+                    pgCount: reportDetails.longest.length > 0 ? reportDetails.longest[0].maxPages.pageCount : 0
                 },
                 {
                     name: 'shortest',
-                    pgCount: reportDetails.shortest[0].minPages.pageCount
+                    pgCount: reportDetails.shortest.length > 0 ? reportDetails.shortest[0].minPages.pageCount : 0
                 }
             ],
             // find top author (excluding blank string)
@@ -153,7 +158,7 @@ function Report() {
     }
 
     if (!reportDetails) return <><YearForm handleChange={handleChange}/><div>Loading...</div></>
-    // if (data) console.log(data);
+    if (data) console.log(data.pageCount);
 
     return (
         <>
@@ -178,20 +183,21 @@ function Report() {
                     needleColor="#cacaca"
                 />
             </div>
-            <div className="p-2 m-2 grey-tile" onClick={(e) => {
+            {data && data.pageCount && 
+            (<div className="p-2 m-2 grey-tile" onClick={(e) => {
                 setOrder([2, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">New Books Page Count</h4>
-                <p className="text-center">{reportDetails && reportDetails.pageCount[0].totalPageCount.toLocaleString()}</p>
+                <p className="text-center">{data.pageCount.newBooks.toLocaleString()}</p>
                 {/* max pages set to 20,000 */}
                 <GaugeChart id="gauge-chart2" 
                     colors={["#ffd25fff", "#51ff60ff"]} 
                     nrOfLevels={4} 
-                    percent={reportDetails.pageCount[0].totalPageCount / 20000}
+                    percent={data.pageCount.newBooks / 20000}
                     hideText={true}
                     needleColor="#cacaca"
                 />
-            </div>
+            </div>)}
             <div className="p-2 m-2 grey-tile">
                 <h4 className="text-center">Total Books Read</h4>
                 <p className="text-center">{reportDetails && (reportDetails.bookCount + reportDetails.rereadCount).toLocaleString()}</p>
@@ -205,31 +211,31 @@ function Report() {
                 />
                 <p className="text-center">Rereads: {reportDetails.rereadCount.toLocaleString()}</p>
             </div>
-            <div className="p-2 m-2 grey-tile">
+            {data && data.pageCount && 
+            (<div className="p-2 m-2 grey-tile">
                 <h4 className="text-center">Total Page Count</h4>
-                <p className="text-center">{reportDetails && (reportDetails.pageCount[0].totalPageCount + 
-                    reportDetails.rereadPageCount[0].totalPageCount).toLocaleString()}</p>
+                <p className="text-center">{(data.pageCount.newBooks + data.pageCount.rereadBooks).toLocaleString()}</p>
                 {/* max pages set to 20,000 */}
                 <GaugeChart id="gauge-chart2" 
                     colors={["#ffd25fff", "#51ff60ff"]} 
                     nrOfLevels={4} 
-                    percent={(reportDetails.pageCount[0].totalPageCount + 
-                        reportDetails.rereadPageCount[0].totalPageCount) / 20000}
+                    percent={(data.pageCount.newBooks + data.pageCount.rereadBooks) / 20000}
                     hideText={true}
                     needleColor="#cacaca"
                 />
-                <p className="text-center">Rereads: {reportDetails.rereadPageCount[0].totalPageCount.toLocaleString()}</p>
-            </div>
+                <p className="text-center">Rereads: {data.pageCount.rereadBooks.toLocaleString()}</p>
+            </div>)}
         </div>
         {/* Longest/Shortest book tiles, bar graph */}
         <div className="d-flex flex-row justify-content-around">
-            <div className="p-3 m-3 grey-tile" onClick={(e) => {
+            {reportDetails && reportDetails.longest.length > 0 && 
+            (<div className="p-3 m-3 grey-tile" onClick={(e) => {
                 setOrder([2, 'desc']); handleOpen();
               }}>
                 <h4 className="text-center">Longest Book</h4>
                 <p className="text-center">{reportDetails.longest[0].maxPages.title}</p>
                 <p className="text-center">Pages: {reportDetails.longest[0].maxPages.pageCount.toLocaleString()}</p>
-            </div>
+            </div>)}
             <div className="p-2 m-3 grey-tile w-50" onClick={(e) => {
                 setOrder([2, 'asc']); handleOpen();
               }}>
@@ -252,13 +258,14 @@ function Report() {
                     </BarChart>
                 </ResponsiveContainer>
             </div>
-            <div className="p-3 m-3 grey-tile" onClick={(e) => {
+            {reportDetails && reportDetails.shortest.length > 0 &&
+            (<div className="p-3 m-3 grey-tile" onClick={(e) => {
                 setOrder([2, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">Shortest Book</h4>
                 <p className="text-center">{reportDetails.shortest[0].minPages.title}</p>
                 <p className="text-center">Pages: {reportDetails.shortest[0].minPages.pageCount.toLocaleString()}</p>
-            </div>
+            </div>)}
         </div>
         {/* bar graphs for format and genre breakdowns */}
         <div className="d-flex flex-row justify-content-around">
