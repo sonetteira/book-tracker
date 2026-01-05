@@ -4,16 +4,26 @@ import DT from 'datatables.net-bs5';
 
 DataTable.use(DT);
 
-function YearBookTable({year, startOrder}) {
+function YearBookTable({year, startOrder, rereads = false}) {
     // console.log(startOrder);
     const [apiResponse, setApiResponse] = useState([]);
+    const [apiEndpoint, setapiEndpoint] = useState('yearBooks');
+
+    // use the rereads flag to handle whether to get from the 
+    // yearBooks or yearRereads api endpoint
+    useEffect(() => {
+        if(rereads) {
+            setapiEndpoint('yearRereads');
+        } 
+        // otherwise use default yearBooks
+    }, [rereads]);
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_URL}/yearBooks?year=${year}`)
+        fetch(`${process.env.REACT_APP_API_URL}/${apiEndpoint}?year=${year}`)
             .then(res => res.json())
             .then(setApiResponse)
             .catch(err => console.error(err));
-    }, [year]);
+    }, [year, apiEndpoint]);
     // this isn't going to give read time. more efficient to calculate w/ express
 
     const capitalizeFirstLetter = (str) => {
