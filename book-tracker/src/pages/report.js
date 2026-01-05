@@ -10,17 +10,18 @@ import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Respons
 
 function Report() {
     const [ reportDetails, setReportDetails ] = useState(null);
-    const [years, setYears] = useState([]);
     const [ year, setYear ] = useState(new Date().getFullYear());
     const [ data, setData ] = useState({});
     const [ open, setOpen ] = useState(false);
     const [ order, setOrder ] = useState([0, 'asc']);
+    const [ showRereads, setShowRereads ] = useState(false);
     
     // handle open close functions for modal
     const handleClose = () => { 
         setOpen(false);
     };
     const handleOpen = () => {
+        console.log(showRereads);
         setOpen(true);
     };
 
@@ -182,7 +183,7 @@ function Report() {
         {/* Total Books and Total Pages gauges */}
         <div className="d-flex flex-row justify-content-around">
             <div className="p-2 m-2 grey-tile" onClick={(e) => {
-                setOrder([0, 'asc']); handleOpen();
+                setShowRereads(false); setOrder([0, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">New Books Read</h4>
                 <p className="text-center">{reportDetails && reportDetails.bookCount.toLocaleString()}</p>
@@ -197,7 +198,7 @@ function Report() {
             </div>
             {data && data.pageCount && 
             (<div className="p-2 m-2 grey-tile" onClick={(e) => {
-                setOrder([2, 'asc']); handleOpen();
+                setShowRereads(false); setOrder([2, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">New Books Page Count</h4>
                 <p className="text-center">{data.pageCount.newBooks.toLocaleString()}</p>
@@ -210,7 +211,9 @@ function Report() {
                     needleColor="#cacaca"
                 />
             </div>)}
-            <div className="p-2 m-2 grey-tile">
+            <div className="p-2 m-2 grey-tile" onClick={(e) => {
+                setShowRereads(true); setOrder([0, 'asc']); handleOpen();
+              }}>
                 <h4 className="text-center">Total Books Read</h4>
                 <p className="text-center">{reportDetails && (reportDetails.bookCount + reportDetails.rereadCount).toLocaleString()}</p>
                 {/* max books set to 80 */}
@@ -224,7 +227,9 @@ function Report() {
                 <p className="text-center">Rereads: {reportDetails.rereadCount.toLocaleString()}</p>
             </div>
             {data && data.pageCount && 
-            (<div className="p-2 m-2 grey-tile">
+            (<div className="p-2 m-2 grey-tile"onClick={(e) => {
+                setShowRereads(true); setOrder([2, 'asc']); handleOpen();
+              }}>
                 <h4 className="text-center">Total Page Count</h4>
                 <p className="text-center">{(data.pageCount.newBooks + data.pageCount.rereadBooks).toLocaleString()}</p>
                 {/* max pages set to 20,000 */}
@@ -242,14 +247,14 @@ function Report() {
         <div className="d-flex flex-row justify-content-around">
             {reportDetails && reportDetails.longest.length > 0 && 
             (<div className="p-3 m-3 grey-tile" onClick={(e) => {
-                setOrder([2, 'desc']); handleOpen();
+                setShowRereads(false); setOrder([2, 'desc']); handleOpen();
               }}>
                 <h4 className="text-center">Longest Book</h4>
                 <p className="text-center">{reportDetails.longest[0].maxPages.title}</p>
                 <p className="text-center">Pages: {reportDetails.longest[0].maxPages.pageCount.toLocaleString()}</p>
             </div>)}
             <div className="p-2 m-3 grey-tile w-50" onClick={(e) => {
-                setOrder([2, 'asc']); handleOpen();
+                setShowRereads(false); setOrder([2, 'asc']); handleOpen();
               }}>
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart
@@ -272,7 +277,7 @@ function Report() {
             </div>
             {reportDetails && reportDetails.shortest.length > 0 &&
             (<div className="p-3 m-3 grey-tile" onClick={(e) => {
-                setOrder([2, 'asc']); handleOpen();
+                setShowRereads(false); setOrder([2, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">Shortest Book</h4>
                 <p className="text-center">{reportDetails.shortest[0].minPages.title}</p>
@@ -282,7 +287,7 @@ function Report() {
         {/* bar graphs for format and genre breakdowns */}
         <div className="d-flex flex-row justify-content-around">
             <div className="p-2 m-3 grey-tile" onClick={(e) => {
-                setOrder([4, 'asc']); handleOpen();
+                setShowRereads(false); setOrder([4, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">Formats</h4>
                     <BarChart
@@ -304,7 +309,7 @@ function Report() {
                     </BarChart>
             </div>
             <div className="p-4 m-3 grey-tile" onClick={(e) => {
-                setOrder([3, 'asc']); handleOpen();
+                setShowRereads(false); setOrder([3, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">Genres</h4>
                 <BarChart
@@ -330,14 +335,14 @@ function Report() {
         {data.topAuthor && data.topAuthor.count != null && 
         (<div className="d-flex flex-row justify-content-around">
             <div className="p-3 m-3 grey-tile" onClick={(e) => {
-                setOrder([1, 'asc']); handleOpen();
+                setShowRereads(false); setOrder([1, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">Top Author</h4>
                 <p className="text-center">{data.topAuthor.name}</p>
                 <p className="text-center">Total Books: {data.topAuthor.count}</p>
             </div>
             <div className="p-4 m-3 grey-tile w-50" onClick={(e) => {
-                setOrder([1, 'asc']); handleOpen();
+                setShowRereads(false); setOrder([1, 'asc']); handleOpen();
               }}>
                 <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -364,14 +369,14 @@ function Report() {
         {data.topRecommender && data.topRecommender.count != null && 
         (<div className="d-flex flex-row justify-content-around">
             <div className="p-3 m-3 grey-tile" onClick={(e) => {
-                setOrder([5, 'desc']); handleOpen();
+                setShowRereads(false); setOrder([5, 'desc']); handleOpen();
               }}>
                 <h4 className="text-center">Top Recommender</h4>
                 <p className="text-center">{data.topRecommender.name}</p>
                 <p className="text-center">Books Recommended: {data.topRecommender.count}</p>
             </div>
             <div className="p-4 m-3 grey-tile w-50" onClick={(e) => {
-                setOrder([5, 'desc']); handleOpen();
+                setShowRereads(false); setOrder([5, 'desc']); handleOpen();
               }}>
                 <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -397,26 +402,26 @@ function Report() {
         {/* Total duration, speed tiles */}
         <div className="d-flex flex-row justify-content-around">
             {data.quickestBook && (<div className="p-3 m-3 grey-tile" onClick={(e) => {
-                setOrder([6, 'asc']); handleOpen();
+                setShowRereads(false); setOrder([6, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">Fastest Book</h4>
                 <p className="text-center">{data.quickestBook.title}: {data.quickestBook.days} Days</p>
             </div>) }
             {data.quickest && (<div className="p-3 m-3 grey-tile" onClick={(e) => {
-                setOrder([7, 'desc']); handleOpen();
+                setShowRereads(false); setOrder([7, 'desc']); handleOpen();
               }}>
                 <h4 className="text-center">Fastest Reading Speed</h4>
                 <p className="text-center">{data.quickest.title}: {data.quickest.days} Days</p>
                 <p className="text-center">Pages Per Day: {Math.round(data.quickest.pagesPerDay)}</p>
             </div>) }
             {data.slowestBook && (<div className="p-3 m-3 grey-tile" onClick={(e) => {
-                setOrder([6, 'desc']); handleOpen();
+                setShowRereads(false); setOrder([6, 'desc']); handleOpen();
               }}>
                 <h4 className="text-center">Slowest Book</h4>
                 <p className="text-center">{data.slowestBook.title}: {data.slowestBook.days} Days</p>
             </div>) }
             {data.slowest && (<div className="p-3 m-3 grey-tile" onClick={(e) => {
-                setOrder([7, 'asc']); handleOpen();
+                setShowRereads(false); setOrder([7, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">Slowest Reading Speed</h4>
                 <p className="text-center">{data.slowest.title}: {data.slowest.days} Days</p>
@@ -426,7 +431,7 @@ function Report() {
         {/* Reading speed line graph */}
         { reportDetails.readingSpeed.length > 0 && (<div className="d-flex flex-row justify-content-around">
             <div className="p-3 m-3 grey-tile" onClick={(e) => {
-                setOrder([0, 'asc']); handleOpen();
+                setShowRereads(false); setOrder([0, 'asc']); handleOpen();
               }}>
                 <h4 className="text-center">Reading Speed</h4>
                 <LineChart width={730} height={250} data={reportDetails.readingSpeed}
@@ -445,7 +450,7 @@ function Report() {
         </div> )}
         {/* modal book table with order customized by which chart was clicked */}
         <Modal isOpen={open} onClose={handleClose}>
-            <YearBookTable year={year} startOrder={order} ></YearBookTable>
+            <YearBookTable year={year} startOrder={order} rereads={showRereads} ></YearBookTable>
         </Modal>
         </>
     );
