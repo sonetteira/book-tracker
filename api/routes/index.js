@@ -13,6 +13,9 @@ router.get('/', function(req, res, next) {
       { name: 'Get Books by Read year', path: '/yearBooks', note:
         'Use query parameter "year" to get a list of books finished in the given year.'
       },
+      { name: 'Get Rereads by Read year', path: '/yearRereads', note: 
+        'Use query parameter "year" to get a list of rereads finished in the given year.'
+      },
       { name: 'Get Book by ID', path: '/getBook', note: 
         'Use query parameter "bookID" to enter a MongoDB ObjectID' 
       },

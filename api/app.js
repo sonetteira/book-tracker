@@ -27,6 +27,7 @@ var updateBookRouter = require('./routes/updateBook');
 var addRereadRouter = require('./routes/addReread');
 var updateRereadRouter = require('./routes/updateReread');
 var deleteRereadRouter = require('./routes/deleteReread');
+var yearlyRereadsRouter = require('./routes/yearlyRereads');
 
 // reports
 var yearlyReportRouter = require('./routes/yearlyReport');
@@ -57,6 +58,7 @@ app.use('/updateBook', updateBookRouter);
 app.use('/addReread', addRereadRouter);
 app.use('/updateReread', updateRereadRouter);
 app.use('/deleteReread', deleteRereadRouter);
+app.use('/yearRereads', yearlyRereadsRouter);
 
 
 // reports
