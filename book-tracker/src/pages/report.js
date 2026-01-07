@@ -92,7 +92,7 @@ function Report() {
     useEffect(() => {
         if (!reportDetails) return;
         // data is a set of objects formatted for recharts
-        var poles = findMaxMin(reportDetails.readingSpeed, 'days');
+        var poles = findMaxMin(reportDetails.speed, 'days');
         var speedPoles = findMaxMin(reportDetails.readingSpeed, 'pagesPerDay');
         setData({
             // total page count, new and reread books

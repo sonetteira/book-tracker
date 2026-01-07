@@ -153,6 +153,24 @@ router.get('/', async (req, res) => {
             { $sort: { endDate: 1 }},
             { $project: {title: 1, endDate: 1, days: 1, pageCount: 1, pagesPerDay: 1}}
         ]);
+        // consumption speed, including audiobooks (in days)
+        report.speed = await Book.aggregate([
+            { $match: { $and: [
+                { startDate: { $ne:null } },
+                { endDate: {
+                    $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+                    $lt: new Date(`${year+1}-01-01T00:00:00.000Z`)
+                }},
+            ]}},
+            { $addFields: {
+                seconds: { $subtract: ['$endDate', '$startDate']}
+            }},
+            { $addFields: {
+                days: { $divide: ['$seconds', 60*60*24*1000]}
+            }},
+            { $sort: { days: 1 }},
+            { $project: {title: 1, days: 1}}
+        ])
         res.json(report);
     } catch (err) {
         console.error('Error fetching report:', err);
