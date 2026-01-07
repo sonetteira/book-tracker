@@ -78,9 +78,9 @@ function BookTable() {
         { 
             title: 'Date Finished', 
             data: 'endDate',
-            render: data => {
+            render: (data, type) => {
                 if (!data) return '';
-                return new Date(data).toLocaleDateString('en-US', {timeZone: 'UTC'});
+                return type === 'sort' ? data : new Date(data).toLocaleDateString('en-US', {timeZone: 'UTC'});
             }
         },
     ];
@@ -89,9 +89,9 @@ function BookTable() {
         {
             title: 'Date Started',
             data: 'startDate',
-            render: data => {
+            render: (data, type) => {
                 if (!data) return '';
-                return new Date(data).toLocaleDateString('en-US', {timeZone: 'UTC'});
+                return type === 'sort' ? data : new Date(data).toLocaleDateString('en-US', {timeZone: 'UTC'});
             }
         }
     ];
