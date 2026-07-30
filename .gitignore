@@ -19,6 +19,7 @@
 .env.production.local
 .env
 */.env
+mongoexportconfig.yaml
 
 npm-debug.log*
 yarn-debug.log*
